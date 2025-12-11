@@ -828,14 +828,14 @@ export function DataTable({
                 title={sortState ? `Sorted by ${sortState.column === 'route' ? 'Route' : sortState.column === 'code' ? 'Code' : sortState.column === 'location' ? 'Location' : sortState.column === 'delivery' ? 'Delivery' : 'No'} (${sortState.direction === 'asc' ? 'ascending' : 'descending'})` : 'Sort table'}
               >
                 {sortState ? (
-                  sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4 text-gray-100 group-data-[state=open]:text-gray-400" /> : <ArrowDown className="w-4 h-4 text-gray-100 group-data-[state=open]:text-gray-400" />
+                  sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4 text-gray-600 dark:text-gray-100 group-data-[state=open]:text-gray-400" /> : <ArrowDown className="w-4 h-4 text-gray-600 dark:text-gray-100 group-data-[state=open]:text-gray-400" />
                 ) : (
-                  <ArrowUpDown className="w-4 h-4 opacity-50 text-gray-100 group-data-[state=open]:text-gray-400" />
+                  <ArrowUpDown className="w-4 h-4 opacity-50 text-gray-600 dark:text-gray-100 group-data-[state=open]:text-gray-400" />
                 )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-52 p-0" align="start">
-              <div className="p-3 bg-slate-100 dark:bg-transparent rounded-lg border border-slate-200 dark:border-border/20">
+              <div className="p-3 bg-slate-100 dark:bg-black/95 rounded-lg border border-slate-200 dark:border-blue-500/20">
                 <h4 className="font-medium text-sm mb-3 pb-2 border-b border-slate-300 dark:border-border/20 flex items-center gap-2">
                   <ArrowUpDown className="w-3.5 h-3.5 text-gray-400 dark:text-blue-400" />
                   Sort By
@@ -933,7 +933,7 @@ export function DataTable({
                   data-testid="combined-filter-trigger"
                   title={isSharedView ? `Hide deliveries (${deliveryFilterValue.length} hidden)` : `Filter table (${filterValue.length + deliveryFilterValue.length} active)`}
                 >
-                  <Filter className="w-4 h-4 text-gray-100 group-data-[state=open]:text-gray-400" />
+                  <Filter className="w-4 h-4 text-gray-600 dark:text-gray-100 group-data-[state=open]:text-gray-400" />
                 </Button>
               </PopoverTrigger>
               {(filterValue.length > 0 || deliveryFilterValue.length > 0) && (
@@ -942,7 +942,7 @@ export function DataTable({
                 </span>
               )}
               <PopoverContent className="w-64 p-0" align="start">
-              <div className="p-3 bg-slate-100 dark:bg-transparent rounded-lg border border-slate-200 dark:border-border/20">
+              <div className="p-3 bg-slate-100 dark:bg-black/95 rounded-lg border border-slate-200 dark:border-blue-500/20">
                 {/* Routes Section - Hidden in shared view */}
                 {!isSharedView && (
                   <>
@@ -1037,7 +1037,7 @@ export function DataTable({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchTermChange?.(e.target.value)}
-              className="pl-7 pr-7 h-8 bg-primary/10 dark:bg-transparent text-foreground placeholder:text-muted-foreground border-2 border-primary/20 hover:border-primary/30 hover:bg-primary/15 dark:hover:bg-transparent rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:border-primary/40 focus-visible:bg-primary/20 dark:focus-visible:bg-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
+              className="pl-7 pr-7 h-8 bg-transparent dark:bg-transparent text-foreground placeholder:text-muted-foreground border-2 border-primary/20 hover:border-primary/30 hover:bg-transparent dark:hover:bg-transparent rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:border-primary/40 focus-visible:bg-transparent dark:focus-visible:bg-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
               data-testid="search-input"
             />
             {searchTerm && (
