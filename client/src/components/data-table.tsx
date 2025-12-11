@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/table";
 import { ColumnHeader } from "./column-header";
 import { EditableCell } from "./editable-cell";
-import { ImagePreview } from "./image-preview";
 import { InfoModal } from "./info-modal";
+import { ImageLightbox } from "./image-lightbox";
 import { SlidingDescription } from "./sliding-description";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,6 +59,7 @@ import {
   Share2,
   Power,
   Bookmark,
+  Image as ImageIcon,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -1074,7 +1075,7 @@ export function DataTable({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchTermChange?.(e.target.value)}
-              className="pl-7 pr-7 h-8 bg-primary/10 text-foreground placeholder:text-muted-foreground border-2 border-primary/20 hover:border-primary/30 hover:bg-primary/15 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:border-primary/40 focus-visible:bg-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
+              className="pl-7 pr-7 h-8 bg-primary/10 dark:bg-transparent text-foreground placeholder:text-muted-foreground border-2 border-primary/20 hover:border-primary/30 hover:bg-primary/15 dark:hover:bg-transparent rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:border-primary/40 focus-visible:bg-primary/20 dark:focus-visible:bg-transparent disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
               data-testid="search-input"
             />
             {searchTerm && (
@@ -1332,17 +1333,7 @@ export function DataTable({
                                 >
                                   <div className="w-[98%] mx-auto text-center">
                                   {column.dataKey === "images" ? (
-                                    <ImagePreview
-                                      images={row.images}
-                                      rowId={row.id}
-                                      onAddImage={() =>
-                                        onSelectRowForImage(row.id)
-                                      }
-                                      editMode={editMode}
-                                      onAccessDenied={() =>
-                                        onSelectRowForImage("access-denied")
-                                      }
-                                    />
+                                    <ImageLightbox images={row.images} rowId={row.id} />
                                   ) : column.dataKey === "info" ? (
                                     row.info && row.info.trim() ? (
                                       <InfoModal
@@ -1375,6 +1366,27 @@ export function DataTable({
                                         value={getCellValue(row, column, index)}
                                         type="select"
                                         options={deliveryOptions}
+                                        dataKey={column.dataKey}
+                                        onSave={(value) =>
+                                          onUpdateRow.mutate({
+                                            id: row.id,
+                                            updates: {
+                                              [column.dataKey]: value,
+                                            },
+                                          })
+                                        }
+                                      />
+                                    ) : (
+                                      <span className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">
+                                        {getCellValue(row, column, index) || '—'}
+                                      </span>
+                                    )
+                                  ) : column.dataKey === "route" ? (
+                                    editMode && column.isEditable === "true" ? (
+                                      <EditableCell
+                                        value={getCellValue(row, column, index)}
+                                        type="select"
+                                        options={routeOptions}
                                         dataKey={column.dataKey}
                                         onSave={(value) =>
                                           onUpdateRow.mutate({
@@ -1486,10 +1498,10 @@ export function DataTable({
                                             onUpdateRow.isPending &&
                                             onUpdateRow.variables?.id === row.id
                                           }
-                                          data-testid={`button-add-image-${row.id}`}
-                                          title="Add image"
+                                          data-testid={`button-manage-image-${row.id}`}
+                                          title="Manage images"
                                         >
-                                          <PlusCircle className="w-4 h-4" />
+                                          <ImageIcon className="w-4 h-4" />
                                         </Button>
                                       <Button
                                         size="sm"

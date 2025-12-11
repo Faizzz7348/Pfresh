@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Check, X } from "lucide-react";
 
 interface EditableCellProps {
   value: any;
@@ -11,20 +15,12 @@ interface EditableCellProps {
 }
 
 export function EditableCell({ value, type, onSave, options, dataKey }: EditableCellProps) {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [editValue, setEditValue] = useState(value);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setEditValue(value);
   }, [value]);
-
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [isEditing]);
 
   const handleSave = () => {
     let processedValue = editValue;
@@ -37,28 +33,20 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     }
     
     onSave(processedValue);
-    setIsEditing(false);
+    setIsOpen(false);
   };
 
   const handleCancel = () => {
     setEditValue(value);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSave();
-    } else if (e.key === 'Escape') {
-      handleCancel();
-    }
+    setIsOpen(false);
   };
 
   const getPlaceholder = () => {
     if (dataKey === 'latitude') {
-      return "e.g. 3.139003 (decimal degrees)";
+      return "e.g. 3.139003";
     }
     if (dataKey === 'longitude') {
-      return "e.g. 101.686855 (decimal degrees)";
+      return "e.g. 101.686855";
     }
     if (type === 'currency') {
       return "0.00";
@@ -66,57 +54,202 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     if (type === 'number') {
       return "Enter number";
     }
-    return undefined;
+    return "Enter value";
   };
 
-  if (isEditing) {
-    if (type === 'select' && options) {
-      return (
-        <Select 
-          value={editValue} 
-          onValueChange={(newValue) => {
-            setEditValue(newValue);
-            onSave(newValue);
-            setIsEditing(false);
-          }}
-        >
-          <SelectTrigger className="w-full h-6 px-2 py-1 text-sm bg-transparent border-transparent">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map((option) => (
-              <SelectItem key={option} value={option}>
-                {option}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      );
-    }
-    
+  // For route and delivery - use select with popover
+  if (['route', 'delivery'].includes(dataKey || '') && options && options.length > 0) {
     return (
-      <Input
-        ref={inputRef}
-        type={type === 'number' || type === 'currency' ? 'number' : 'text'}
-        step={type === 'currency' ? '0.01' : undefined}
-        value={type === 'currency' ? editValue.toString().replace(/[^0-9.]/g, '') : editValue}
-        onChange={(e) => setEditValue(e.target.value)}
-        onBlur={handleSave}
-        onKeyDown={handleKeyDown}
-        placeholder={getPlaceholder()}
-        className="w-full h-6 px-2 py-1 text-sm cell-editing glass-input border-none"
-        data-testid="input-editable-cell"
-      />
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <span
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            data-testid="text-editable-cell"
+          >
+            {value || <span className="text-gray-400">—</span>}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="center">
+          <div className="space-y-3">
+            <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+              Select {dataKey}
+            </div>
+            <Select 
+              value={editValue || ''} 
+              onValueChange={(newValue) => {
+                setEditValue(newValue);
+                onSave(newValue);
+                setIsOpen(false);
+              }}
+            >
+              <SelectTrigger className="w-full h-9 text-sm">
+                <SelectValue placeholder={`Select ${dataKey}`} />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </PopoverContent>
+      </Popover>
     );
   }
 
+  // For code, location - use popover with input
+  if (['code', 'location'].includes(dataKey || '')) {
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <span
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            data-testid="text-editable-cell"
+          >
+            {value || <span className="text-gray-400">—</span>}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="center">
+          <div className="space-y-3">
+            <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+              Edit {dataKey}
+            </div>
+            <Input
+              value={editValue || ''}
+              onChange={(e) => setEditValue(e.target.value)}
+              placeholder={getPlaceholder()}
+              className="w-full h-9 text-sm"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSave();
+                } else if (e.key === 'Escape') {
+                  handleCancel();
+                }
+              }}
+            />
+            <div className="flex gap-2 justify-end">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCancel}
+                className="h-7 px-3 text-xs"
+              >
+                <X className="w-3 h-3 mr-1" />
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleSave}
+                className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-700"
+              >
+                <Check className="w-3 h-3 mr-1" />
+                Save
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  // For select type
+  if (type === 'select' && options) {
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <span
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            data-testid="text-editable-cell"
+          >
+            {value || <span className="text-gray-400">—</span>}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="center">
+          <div className="space-y-3">
+            <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+              Select {dataKey}
+            </div>
+            <Select 
+              value={editValue || ''} 
+              onValueChange={(newValue) => {
+                setEditValue(newValue);
+                onSave(newValue);
+                setIsOpen(false);
+              }}
+            >
+              <SelectTrigger className="w-full h-9 text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  // For other fields - use popover with input
   return (
-    <span
-      onClick={() => setIsEditing(true)}
-      className="cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 transition-colors"
-      data-testid="text-editable-cell"
-    >
-      {value}
-    </span>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <span
+          className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[40px] text-center"
+          data-testid="text-editable-cell"
+        >
+          {value || <span className="text-gray-400">—</span>}
+        </span>
+      </PopoverTrigger>
+      <PopoverContent className="w-56 p-3" align="center">
+        <div className="space-y-3">
+          <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+            Edit {dataKey || 'Value'}
+          </div>
+          <Input
+            type={type === 'number' || type === 'currency' ? 'number' : 'text'}
+            step={type === 'currency' ? '0.01' : undefined}
+            value={type === 'currency' ? editValue.toString().replace(/[^0-9.]/g, '') : editValue || ''}
+            onChange={(e) => setEditValue(e.target.value)}
+            placeholder={getPlaceholder()}
+            className="w-full h-9 text-sm"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSave();
+              } else if (e.key === 'Escape') {
+                handleCancel();
+              }
+            }}
+          />
+          <div className="flex gap-2 justify-end">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleCancel}
+              className="h-7 px-3 text-xs"
+            >
+              <X className="w-3 h-3 mr-1" />
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleSave}
+              className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-700"
+            >
+              <Check className="w-3 h-3 mr-1" />
+              Save
+            </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }

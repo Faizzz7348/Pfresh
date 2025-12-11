@@ -6,7 +6,8 @@ import { z } from "zod";
 // Media type with caption and type support (images and videos)
 export const mediaSchema = z.object({
   url: z.string(),
-  caption: z.string().optional().default(""),
+  caption: z.string().optional().default(""), // Title/caption
+  description: z.string().optional().default(""), // Description
   type: z.enum(["image", "video"]).default("image"),
   thumbnail: z.string().optional(), // For video thumbnails
   mimeType: z.string().optional(), // MIME type for uploaded files

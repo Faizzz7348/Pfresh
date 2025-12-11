@@ -1042,6 +1042,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ImgBB image upload route
+  app.post("/api/upload-image", async (req, res) => {
+    try {
+      const { image, name } = req.body;
+      
+      if (!image) {
+        return res.status(400).json({ error: "Image data is required" });
+      }
+
+      const IMGBB_API_KEY = process.env.IMGBB_API_KEY;
+      if (!IMGBB_API_KEY) {
+        return res.status(500).json({ error: "ImgBB API key not configured" });
+      }
+
+      // Remove data URL prefix if present
+      const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+
+      // Upload to ImgBB
+      const formData = new URLSearchParams();
+      formData.append('key', IMGBB_API_KEY);
+      formData.append('image', base64Data);
+      formData.append('name', name || 'upload');
+
+      const response = await fetch('https://api.imgbb.com/1/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'ImgBB upload failed');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        res.json({ 
+          url: data.data.url,
+          display_url: data.data.display_url,
+          thumb: data.data.thumb?.url,
+          delete_url: data.data.delete_url
+        });
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('ImgBB upload error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to upload image'
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
