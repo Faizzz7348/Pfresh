@@ -750,7 +750,7 @@ export function DataTable({
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-6 py-3 border-b border-border/20 bg-muted/50 dark:bg-muted backdrop-blur-sm text-[10px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+      <div className="px-6 py-3 border-b border-border/20 bg-muted/50 dark:bg-transparent backdrop-blur-sm text-[10px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
         <div className="flex flex-row gap-3 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
@@ -816,7 +816,7 @@ export function DataTable({
         
       </div>
       {/* Bottom Row: Sort/Filter/Clear (Left) and Search (Right) */}
-      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-muted/50 dark:bg-muted">
+      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-muted/50 dark:bg-transparent">
         <div className="flex items-center gap-2 flex-shrink-0">
           {/* Sort Popover */}
           <Popover>
@@ -1055,7 +1055,7 @@ export function DataTable({
       </div>
       {/* Active Filters Display */}
       {(searchTerm || filterValue.length > 0 || deliveryFilterValue.length > 0) && (
-        <div className="px-6 py-2 border-b border-border/20 bg-muted/50 dark:bg-muted">
+        <div className="px-6 py-2 border-b border-border/20 bg-muted/50 dark:bg-transparent">
           <div className="flex flex-wrap items-center gap-1">
             <span className="text-muted-foreground font-medium text-xs">Active:</span>
             {searchTerm && (
@@ -1692,7 +1692,7 @@ export function DataTable({
           </Table>
 
           {/* Pagination Controls */}
-          <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-border bg-muted/50 dark:bg-muted transition-smooth-fast">
+          <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-border bg-muted/50 dark:bg-transparent transition-smooth-fast">
             <div className="flex items-center gap-1.5">
               {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
               {currentPage > 3 && (
