@@ -1033,7 +1033,7 @@ export default function TablePage() {
           onToggleTheme={toggleTheme}
         />
       </div>
-      <main className="pt-4 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
+      <main className="pt-16 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
         <div className="container mx-auto px-4 py-8 max-w-3xl" data-testid="table-page">
           {/* Header Section - Carousel with Pages */}
           <div className="mb-8 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-300">
