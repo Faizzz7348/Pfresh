@@ -8,6 +8,7 @@ import TablePage from "@/pages/table";
 import SharedTablePage from "@/pages/shared-table";
 import CustomTableList from "@/pages/custom-table-list";
 import CustomTableView from "@/pages/custom-table";
+import CalendarPage from "@/pages/calendar";
 import HelpPage from "@/pages/help";
 import NotFound from "@/pages/not-found";
 
@@ -26,6 +27,9 @@ function Router() {
         </Route>
         <Route path="/custom/:shareId">
           {() => <CustomTableView />}
+        </Route>
+        <Route path="/calendar">
+          {() => <CalendarPage />}
         </Route>
         <Route path="/help">
           {() => <HelpPage />}

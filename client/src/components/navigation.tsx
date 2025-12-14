@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks } from "lucide-react";
+import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Calendar } from "lucide-react";
 import { useLocation } from "wouter";
 import { AddColumnModal } from "./add-column-modal";
 import {
@@ -133,6 +133,16 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               >
                 <ListChecks className="w-4 h-4 mr-2 text-purple-500 dark:text-purple-400" />
                 <span style={{fontSize: '10px'}}>Custom Tables</span>
+              </DropdownMenuItem>
+
+              {/* Calendar */}
+              <DropdownMenuItem 
+                onClick={() => navigate('/calendar')}
+                className="cursor-pointer"
+                data-testid="menu-calendar"
+              >
+                <Calendar className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
+                <span style={{fontSize: '10px'}}>Calendar</span>
               </DropdownMenuItem>
 
               {/* Help Guide */}
