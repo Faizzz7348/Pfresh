@@ -4,14 +4,12 @@
   "description": "Professional delivery route management and optimization system",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAFA",
-  "theme_color": "#1976D2",
-  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "orientation": "any",
   "scope": "/",
-  "theme_color_scheme": {
-    "light": "#1976D2",
-    "dark": "#121212"
-  },
+  "categories": ["business", "productivity", "utilities"],
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "icons": [
     {
       "src": "/assets/icon-72x72.png",
