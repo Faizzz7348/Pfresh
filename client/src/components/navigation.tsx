@@ -235,6 +235,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               />
             </div>
           )}
+          </div>
         </div>
       </div>
     </nav>
