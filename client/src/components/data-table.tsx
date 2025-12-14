@@ -1708,27 +1708,29 @@ export function DataTable({
               </TableRow>
             </tfoot>
           </Table>
+        </DragDropContext>
+      </div>
+      
+      {/* Pagination Controls - Outside scrollable area */}
+      <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-border bg-white/70 dark:bg-black/70 backdrop-blur-2xl transition-smooth-fast">
+        <div className="flex items-center gap-1.5">
+          {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
+          {currentPage > 3 && (
+            <Button
+              variant="outline"
+              size="xs"
+              onClick={() => goToPage(1)}
+              className="pagination-button rounded-lg"
+              data-testid="button-first-page"
+            >
+              <ChevronsLeft className="h-3 w-3" />
+            </Button>
+          )}
 
-          {/* Pagination Controls */}
-          <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-border bg-white/70 dark:bg-black/70 backdrop-blur-2xl transition-smooth-fast">
-            <div className="flex items-center gap-1.5">
-              {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
-              {currentPage > 3 && (
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={() => goToPage(1)}
-                  className="pagination-button rounded-lg"
-                  data-testid="button-first-page"
-                >
-                  <ChevronsLeft className="h-3 w-3" />
-                </Button>
-              )}
-
-              <div className="flex items-center gap-1">
-                {(() => {
-                  // Calculate sliding window of max 6 pages
-                  const maxButtons = 6;
+          <div className="flex items-center gap-1">
+            {(() => {
+              // Calculate sliding window of max 6 pages
+              const maxButtons = 6;
                   
                   // If total pages <= maxButtons, show all pages
                   if (totalPages <= maxButtons) {
@@ -1789,28 +1791,27 @@ export function DataTable({
                     );
                   });
                 })()}
-              </div>
-
-              {/* Show Last button only when (totalPages - currentPage) >= 3 (has 3+ pages after) */}
-              {(totalPages - currentPage) >= 3 && (
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={() => goToPage(totalPages)}
-                  className="pagination-button rounded-lg"
-                  data-testid="button-last-page"
-                >
-                  <ChevronsRight className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
-
-            <div className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">
-              {currentPage} of {totalPages}
-            </div>
           </div>
-        </DragDropContext>
+
+          {/* Show Last button only when (totalPages - currentPage) >= 3 (has 3+ pages after) */}
+          {(totalPages - currentPage) >= 3 && (
+            <Button
+              variant="outline"
+              size="xs"
+              onClick={() => goToPage(totalPages)}
+              className="pagination-button rounded-lg"
+              data-testid="button-last-page"
+            >
+              <ChevronsRight className="h-3 w-3" />
+            </Button>
+          )}
+        </div>
+
+        <div className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">
+          {currentPage} of {totalPages}
+        </div>
       </div>
+      
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
         <DialogContent className="sm:max-w-[425px] transition-smooth-fast">
