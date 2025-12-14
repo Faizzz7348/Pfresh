@@ -1243,28 +1243,22 @@ export function DataTable({
                                   if (isSharedView || editMode) {
                                     const status = getScheduleStatus(row);
                                     if (status === 'inactive') {
-                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50";
+                                      return "bg-gray-100/60 dark:bg-gray-900/70 opacity-50";
                                     } else if (status === 'off-schedule') {
-                                      return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 opacity-60" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 opacity-60";
+                                      return "odd:bg-white dark:odd:bg-gray-900/80 even:bg-blue-50/50 dark:even:bg-gray-800/80 opacity-60";
                                     } else {
-                                      return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20";
+                                      return "odd:bg-white dark:odd:bg-gray-900/80 even:bg-blue-50/50 dark:even:bg-gray-800/80";
                                     }
                                   } else {
                                     // Regular view mode: standard styling
                                     if (row.active === false) {
-                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50";
+                                      return "bg-gray-100/60 dark:bg-gray-900/70 opacity-50";
                                     } else {
-                                      return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20";
+                                      return "odd:bg-white dark:odd:bg-gray-900/80 even:bg-blue-50/50 dark:even:bg-gray-800/80";
                                     }
                                   }
                                 })()
-                              } hover:bg-blue-100/60 dark:hover:bg-blue-800/30 table-cell-unique-transition ${
+                              } hover:bg-blue-100/60 dark:hover:bg-blue-800/40 table-cell-unique-transition ${
                                 snapshot.isDragging ? "drag-elevate" : ""
                               }`}
                               data-testid={`table-row-${row.id}`}
