@@ -56,18 +56,9 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full">
-      {/* Browser Tab Background */}
-      <div className="w-full bg-gradient-to-b from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 border-b-2 border-gray-400/50 dark:border-gray-600/50">
-        <div className="max-w-full px-6">
-          <div className="flex h-16 items-center justify-between text-[12px] bg-white/90 dark:bg-black/90 backdrop-blur-xl rounded-t-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)] border-x border-t border-gray-300/60 dark:border-gray-700/60"
-            style={{
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(240,244,248,0.95) 100%)',
-              backgroundImage: theme === 'dark' 
-                ? 'linear-gradient(180deg, rgba(15,23,42,0.95) 0%, rgba(0,0,0,0.95) 100%)'
-                : 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(240,244,248,0.95) 100%)'
-            }}
-          >
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-700/10 dark:from-blue-500/20 dark:via-blue-600/20 dark:to-blue-700/20 backdrop-blur-2xl bg-white/30 dark:bg-black/30 shadow-lg shadow-blue-500/20">
+      <div className="container mx-auto px-4">
+        <div className="flex h-14 items-center justify-between text-[12px]">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -235,8 +226,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               />
             </div>
           )}
-          </div>
         </div>
+
       </div>
     </nav>
   );
