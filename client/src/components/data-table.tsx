@@ -69,7 +69,7 @@ import {
 } from "./skeleton-loader";
 import { TableRow as TableRowType, TableColumn } from "@shared/schema";
 import { UseMutationResult } from "@tanstack/react-query";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -222,9 +222,6 @@ export function DataTable({
     string | null
   >(null);
   const [sortState, setSortState] = useState<{column: string; direction: 'asc' | 'desc'} | null>(null);
-  const [holdingRowId, setHoldingRowId] = useState<string | null>(null);
-  const [isDragEnabled, setIsDragEnabled] = useState<string | null>(null);
-  const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
   // Filter columns to hide "info" column when not in edit mode
@@ -236,15 +233,6 @@ export function DataTable({
       setCurrentPage(1);
     }
   }, [rows.length]);
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (holdTimerRef.current) {
-        clearTimeout(holdTimerRef.current);
-      }
-    };
-  }, []);
 
   // Use rows as provided (already filtered by parent with distances calculated)
   
@@ -374,45 +362,8 @@ export function DataTable({
     if (page === currentPage) return;
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
-
-  // Hold-to-drag handlers
-  const handleMouseDown = (rowId: string) => {
-    if (!editMode) return;
-    
-    setHoldingRowId(rowId);
-    const timer = setTimeout(() => {
-      setIsDragEnabled(rowId);
-      setHoldingRowId(null);
-      toast({
-        title: "✓ Ready to drag",
-        description: "You can now reorder this row",
-        duration: 1500,
-      });
-    }, 500); // 500ms hold time
-    
-    if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-    holdTimerRef.current = timer;
-  };
-
-  const handleMouseUp = () => {
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-    }
-    setHoldingRowId(null);
-  };
-
-  const handleMouseLeave = () => {
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-    }
-    setHoldingRowId(null);
-  };
-
   const handleDragEnd = (result: any) => {
-    if (!result.destination) {
-      setIsDragEnabled(null);
-      return;
-    }
+    if (!result.destination) return;
 
     const { source, destination, type } = result;
 
@@ -431,9 +382,6 @@ export function DataTable({
       const rowIds = newRowOrder.map((row) => row.id);
       onReorderRows.mutate(rowIds);
     }
-    
-    // Reset drag enabled state after drop
-    setIsDragEnabled(null);
   };
 
   const formatNumber = (value: string | number) => {
@@ -1284,15 +1232,12 @@ export function DataTable({
                           key={row.id}
                           draggableId={row.id}
                           index={index}
-                          isDragDisabled={!editMode || isDragEnabled !== row.id}
                         >
                           {(provided, snapshot) => (
                             <TableRow
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               className={`table-row-glass group ${
-                                holdingRowId === row.id ? 'ring-2 ring-blue-500 ring-opacity-50 scale-[1.01] transition-all' : ''
-                              } ${
                                 (() => {
                                   // Apply 3-color styling ONLY for shared view or edit mode
                                   if (isSharedView || editMode) {
@@ -1500,29 +1445,13 @@ export function DataTable({
                                   <div className="flex items-center gap-3">
                                     <div
                                       {...provided.dragHandleProps}
-                                      onMouseDown={() => handleMouseDown(row.id)}
-                                      onMouseUp={handleMouseUp}
-                                      onMouseLeave={handleMouseLeave}
-                                      onTouchStart={() => handleMouseDown(row.id)}
-                                      onTouchEnd={handleMouseUp}
-                                      className={`p-2 rounded relative ${
-                                        snapshot.isDragging 
-                                          ? "cursor-grabbing" 
-                                          : editMode 
-                                            ? holdingRowId === row.id
-                                              ? "cursor-grabbing animate-pulse bg-blue-500/20"
-                                              : isDragEnabled === row.id
-                                                ? "cursor-grab bg-green-500/20"
-                                                : "cursor-pointer"
-                                            : "cursor-default"
+                                      className={`p-2 rounded ${
+                                        snapshot.isDragging ? "cursor-grabbing" : editMode ? "cursor-grab" : "cursor-default"
                                       } text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all`}
-                                      title={editMode ? holdingRowId === row.id ? "Hold to enable drag..." : isDragEnabled === row.id ? "Ready to drag - Drag to reorder" : "Hold to drag" : ""}
+                                      title={editMode ? "Drag to reorder" : ""}
                                       data-testid={`drag-handle-${row.id}`}
                                     >
-                                      {holdingRowId === row.id && (
-                                        <div className="absolute inset-0 rounded bg-blue-500/30 animate-ping" />
-                                      )}
-                                      <GripVertical className={`w-4 h-4 relative z-10 ${isDragEnabled === row.id ? 'text-green-500 dark:text-green-400' : ''}`} />
+                                      <GripVertical className="w-4 h-4" />
                                     </div>
                                     <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity">
                                     {editMode && (
