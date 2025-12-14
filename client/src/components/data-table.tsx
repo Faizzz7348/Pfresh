@@ -464,9 +464,9 @@ export function DataTable({
         }
         if (typeof kmValue === "number") {
           if (kmValue === 0) {
-            return "0.00 km";
+            return "0.0 Km";
           }
-          return `${kmValue.toFixed(2)} km`;
+          return `${kmValue.toFixed(1)} Km`;
         }
         return "—";
       default:
@@ -1203,6 +1203,30 @@ export function DataTable({
                           </tr>
                         ),
                       )
+                    : paginatedRows.length === 0
+                    ? (
+                      <tr>
+                        <td colSpan={visibleColumns.length + 1} className="p-12 text-center">
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="text-4xl">🔍</div>
+                            <p className="text-lg font-medium text-muted-foreground">
+                              {searchTerm ? (
+                                <>Searching for "<span className="text-foreground font-semibold">{searchTerm}</span>" not found</>
+                              ) : filterValue.length > 0 || deliveryFilterValue.length > 0 ? (
+                                "No results match your filters"
+                              ) : (
+                                "No data available"
+                              )}
+                            </p>
+                            {(searchTerm || filterValue.length > 0 || deliveryFilterValue.length > 0) && (
+                              <p className="text-sm text-muted-foreground">
+                                Try adjusting your search or filters
+                              </p>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )
                     : paginatedRows.map((row, index) => (
                         <Draggable
                           key={row.id}
@@ -1264,7 +1288,7 @@ export function DataTable({
                                       minWidth: "120px",
                                     }),
                                     ...(column.dataKey === "code" && {
-                                      minWidth: "100px",
+                                      minWidth: "70px",
                                     }),
                                     ...(column.dataKey === "route" && {
                                       minWidth: "90px",
@@ -1700,7 +1724,7 @@ export function DataTable({
                   variant="outline"
                   size="xs"
                   onClick={() => goToPage(1)}
-                  className="pagination-button"
+                  className="pagination-button rounded-lg"
                   data-testid="button-first-page"
                 >
                   <ChevronsLeft className="h-3 w-3" />
@@ -1727,7 +1751,7 @@ export function DataTable({
                           variant="outline"
                           size="xs"
                           onClick={() => goToPage(pageNum)}
-                          className={`pagination-button page-number ${
+                          className={`pagination-button page-number rounded-lg ${
                             isCurrentPage ? "active" : ""
                           }`}
                           data-testid={`button-page-${pageNum}`}
@@ -1761,7 +1785,7 @@ export function DataTable({
                         variant="outline"
                         size="xs"
                         onClick={() => goToPage(pageNum)}
-                        className={`pagination-button page-number ${
+                        className={`pagination-button page-number rounded-lg ${
                           isCurrentPage ? "active" : ""
                         }`}
                         data-testid={`button-page-${pageNum}`}
@@ -1779,7 +1803,7 @@ export function DataTable({
                   variant="outline"
                   size="xs"
                   onClick={() => goToPage(totalPages)}
-                  className="pagination-button"
+                  className="pagination-button rounded-lg"
                   data-testid="button-last-page"
                 >
                   <ChevronsRight className="h-3 w-3" />

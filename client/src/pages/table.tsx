@@ -632,7 +632,7 @@ export default function TablePage() {
         location: "New Location",
         delivery: "Pending",
         tngSite,
-        tngRoute,
+        tngRoute: "0.00",
         images: [],
       };
 
