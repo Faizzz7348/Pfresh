@@ -1023,7 +1023,7 @@ export default function TablePage() {
 
   return (
     <>
-      <div className="animate-in fade-in duration-500">
+      <div className="animate-in fade-in duration-500" style={{ paddingTop: 'calc(4rem + env(safe-area-inset-top))' }}>
         <Navigation 
           editMode={editMode}
           onEditModeRequest={handleEditModeRequest}
