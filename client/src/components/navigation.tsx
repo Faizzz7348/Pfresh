@@ -56,9 +56,10 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-white dark:bg-black shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between text-[12px]">
+    <nav className="fixed top-0 left-0 right-0 z-[100] w-full bg-white dark:bg-black shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <div className="w-full border-b-2 border-blue-500/50 dark:border-blue-400/50">
+        <div className="container mx-auto px-4">
+          <div className="flex h-16 items-center justify-between text-[12px]">
           {/* Logo/Brand */}
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -226,8 +227,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               />
             </div>
           )}
+          </div>
         </div>
-
       </div>
     </nav>
   );
