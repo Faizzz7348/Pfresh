@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { insertTableRowSchema, insertTableColumnSchema, insertRouteOptimizationSchema, insertLayoutPreferencesSchema, insertPageSchema, insertSharedTableStateSchema, insertSavedShareLinkSchema, insertCustomTableSchema, insertCustomTableRowSchema, type RouteOptimizationRequest } from "@shared/schema";
 import { z } from "zod";
 import { optimizeRoute } from "./routeOptimizer";
-import { calculateTollPrice, calculateRoutesForDestinations } from "./openrouteservice";
+import { calculateRoutesForDestinations } from "./openrouteservice";
 
 // UUID validation schema
 const uuidSchema = z.string().uuid();

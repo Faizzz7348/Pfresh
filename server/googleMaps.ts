@@ -145,14 +145,7 @@ export async function calculateRouteForLorry(destination: TableRow): Promise<Rou
   }
 }
 
-/**
- * Legacy function for backward compatibility
- * @deprecated Use calculateRouteForLorry instead
- */
-export async function calculateTollPrice(destination: TableRow): Promise<number> {
-  const result = await calculateRouteForLorry(destination);
-  return result.tollPrice;
-}
+
 
 /**
  * Calculate routes (distance and toll prices) for multiple destinations in batch
@@ -191,13 +184,4 @@ export async function calculateRoutesForDestinations(
   return { distances, tollPrices };
 }
 
-/**
- * Legacy function for backward compatibility
- * @deprecated Use calculateRoutesForDestinations instead
- */
-export async function calculateTollPricesForDestinations(
-  destinations: TableRow[]
-): Promise<Record<string, number>> {
-  const result = await calculateRoutesForDestinations(destinations);
-  return result.tollPrices;
-}
+
