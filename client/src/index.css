@@ -121,10 +121,10 @@ textarea {
   --sidebar-border: hsl(0, 0%, 88%);
   --sidebar-ring: hsl(207, 90%, 54%);
   
-  /* Light glass effect variables - Material Design elevation */
-  --glass-bg: rgba(255, 255, 255, 0.92);
-  --glass-border: rgba(0, 0, 0, 0.12);
-  --glass-hover: rgba(255, 255, 255, 0.96);
+  /* Ocean Dark glass effects */
+  --glass-bg: rgba(30, 30, 30, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-hover: rgba(30, 30, 30, 0.92);
   
   /* Material Design 2 pattern (subtle) */
   --pattern-dots: none; /* Material Design uses clean solid backgrounds */
@@ -203,12 +203,6 @@ textarea {
     background-color: var(--background);
   }
   
-  /* Enhanced light mode with better visibility */
-  :not(.dark) body {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
-    color: #0a1929;
-  }
-  
   /* Material Design uses clean solid backgrounds */
 
   /* Material Design Glass Effects with Elevation */
@@ -218,13 +212,6 @@ textarea {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-md); /* 8dp elevation */
-  }
-  
-  /* Light mode uses subtle shadows with better background */
-  :not(.dark) .glass {
-    box-shadow: var(--shadow-md); /* Enhanced elevation */
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(0, 0, 0, 0.08);
   }
   
   .dark .glass {
@@ -244,13 +231,6 @@ textarea {
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm); /* 4dp elevation */
     border-radius: var(--radius);
-  }
-  
-  /* Light mode card - clean elevation with better visibility */
-  :not(.dark) .glass-card {
-    box-shadow: var(--shadow-md);
-    background: rgba(255, 255, 255, 0.97);
-    border: 1px solid rgba(0, 0, 0, 0.08);
   }
   
   /* Dark mode card - elevated surface with white overlay */
