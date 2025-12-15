@@ -373,8 +373,8 @@ export default function CalendarPage() {
             </div>
           </div>
 
-          {/* Calendar Card */}
-          <Card className="p-6 glass-card border-none shadow-2xl rounded-2xl">
+          {/* Calendar */}
+          <div>
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -412,7 +412,7 @@ export default function CalendarPage() {
                 }
               }}
             />
-          </Card>
+          </div>
         </div>
       </main>
 

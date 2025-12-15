@@ -147,45 +147,45 @@ textarea {
 }
 
 .dark {
-  /* Dark Theme - Material Design 2 Dark Theme */
-  /* Background: Grey 900 (#121212) with elevation overlays */
-  /* Primary: Blue 200 (#90CAF9) - Desaturated for dark theme */
-  /* Secondary: Teal A200 (#64FFDA) */
-  /* Surface: Grey 800 with white overlay for elevation */
-  /* Error: Red 300 (#E57373) */
+  /* Dark Theme - Ultra Dark Mode */
+  /* Background: Pure black with deep dark surfaces */
+  /* Primary: Bright blue for contrast */
+  /* Secondary: Bright cyan */
+  /* Surface: Very dark gray surfaces */
+  /* Error: Red for visibility */
   
-  --background: hsl(0, 0%, 7%); /* #121212 - Material dark background */
-  --foreground: hsl(0, 0%, 100%); /* #FFFFFF - high emphasis text (87% opacity) */
-  --card: hsl(0, 0%, 11%); /* #1E1E1E - elevated surface (1dp) */
+  --background: hsl(0, 0%, 0%); /* #000000 - Pure black background */
+  --foreground: hsl(0, 0%, 100%); /* #FFFFFF - high emphasis text */
+  --card: hsl(0, 0%, 4%); /* #0A0A0A - very dark surface */
   --card-foreground: hsl(0, 0%, 100%);
-  --popover: hsl(0, 0%, 11%); /* #1E1E1E */
+  --popover: hsl(0, 0%, 4%); /* #0A0A0A */
   --popover-foreground: hsl(0, 0%, 100%);
   --primary: hsl(207, 79%, 76%); /* #90CAF9 - Blue 200 (dark theme primary) */
   --primary-foreground: hsl(0, 0%, 0%);
   --secondary: hsl(166, 100%, 70%); /* #64FFDA - Teal A200 */
   --secondary-foreground: hsl(0, 0%, 0%);
-  --muted: hsl(0, 0%, 15%); /* #262626 - Grey 800 area */
-  --muted-foreground: hsl(0, 0%, 74%); /* #BDBDBD - medium emphasis (60%) */
+  --muted: hsl(0, 0%, 8%); /* #141414 - very dark muted */
+  --muted-foreground: hsl(0, 0%, 60%); /* #999999 - medium emphasis */
   --accent: hsl(166, 100%, 70%); /* Teal A200 */
   --accent-foreground: hsl(0, 0%, 0%);
   --destructive: hsl(4, 69%, 67%); /* #EF5350 - Red 400 */
   --destructive-foreground: hsl(0, 0%, 0%);
-  --border: hsl(0, 0%, 23%); /* #3A3A3A - divider (12% white) */
-  --input: hsl(0, 0%, 11%);
+  --border: hsl(0, 0%, 12%); /* #1F1F1F - darker border */
+  --input: hsl(0, 0%, 4%);
   --ring: hsl(207, 79%, 76%);
-  --sidebar: hsl(0, 0%, 7%);
+  --sidebar: hsl(0, 0%, 0%);
   --sidebar-foreground: hsl(0, 0%, 100%);
   --sidebar-primary: hsl(207, 79%, 76%);
   --sidebar-primary-foreground: hsl(0, 0%, 0%);
-  --sidebar-accent: hsl(0, 0%, 15%);
+  --sidebar-accent: hsl(0, 0%, 8%);
   --sidebar-accent-foreground: hsl(0, 0%, 100%);
-  --sidebar-border: hsl(0, 0%, 23%);
+  --sidebar-border: hsl(0, 0%, 12%);
   --sidebar-ring: hsl(207, 79%, 76%);
   
-  /* Dark glass effects - Material elevation */
-  --glass-bg: rgba(30, 30, 30, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-hover: rgba(30, 30, 30, 0.92);
+  /* Dark glass effects - Ultra dark */
+  --glass-bg: rgba(10, 10, 10, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-hover: rgba(15, 15, 15, 0.95);
 }
 
 @layer base {
