@@ -126,7 +126,7 @@ export function Footer({ editMode = false }: FooterProps) {
   return (
     <>
       <footer 
-        className={`fixed bottom-0 left-0 right-0 bg-white/30 dark:bg-black/30 backdrop-blur-2xl border-t border-white/20 dark:border-white/10 px-4 py-3 text-sm transition-all duration-500 ease-out shadow-[0_8px_32px_0_rgba(0,0,0,0.12)] ${
+        className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t-2 border-blue-500/50 dark:border-blue-400/50 px-4 py-3 text-sm transition-all duration-500 ease-out shadow-lg ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
         }`}
       >

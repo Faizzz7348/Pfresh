@@ -418,9 +418,9 @@ export default function CalendarPage() {
 
       {/* Event Dialog */}
       <Dialog open={showEventDialog} onOpenChange={setShowEventDialog}>
-        <DialogContent className="sm:max-w-[500px] bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 rounded-3xl">
+        <DialogContent className="sm:max-w-[500px] bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 rounded-3xl text-[#28282B] dark:text-[#E5E4E2]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+            <DialogTitle className="text-xl font-semibold flex items-center gap-2 text-[#28282B] dark:text-[#E5E4E2]">
               {selectedEvent ? (
                 <>
                   <Edit className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -437,49 +437,49 @@ export default function CalendarPage() {
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="event-title">Event Title *</Label>
+              <Label htmlFor="event-title" className="text-[#28282B] dark:text-[#E5E4E2]">Event Title *</Label>
               <Input
                 id="event-title"
                 placeholder="Enter event title..."
                 value={eventTitle}
                 onChange={(e) => setEventTitle(e.target.value)}
-                className="bg-white/50 dark:bg-black/50"
+                className="bg-white/50 dark:bg-black/50 text-[#28282B] dark:text-[#E5E4E2] placeholder:text-[#28282B]/50 dark:placeholder:text-[#E5E4E2]/50"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="event-start">Start Date & Time *</Label>
+                <Label htmlFor="event-start" className="text-[#28282B] dark:text-[#E5E4E2]">Start Date & Time *</Label>
                 <Input
                   id="event-start"
                   type="datetime-local"
                   value={eventStart}
                   onChange={(e) => setEventStart(e.target.value)}
-                  className="bg-white/50 dark:bg-black/50"
+                  className="bg-white/50 dark:bg-black/50 text-[#28282B] dark:text-[#E5E4E2]"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="event-end">End Date & Time</Label>
+                <Label htmlFor="event-end" className="text-[#28282B] dark:text-[#E5E4E2]">End Date & Time</Label>
                 <Input
                   id="event-end"
                   type="datetime-local"
                   value={eventEnd}
                   onChange={(e) => setEventEnd(e.target.value)}
-                  className="bg-white/50 dark:bg-black/50"
+                  className="bg-white/50 dark:bg-black/50 text-[#28282B] dark:text-[#E5E4E2]"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="event-description">Description</Label>
+              <Label htmlFor="event-description" className="text-[#28282B] dark:text-[#E5E4E2]">Description</Label>
               <Textarea
                 id="event-description"
                 placeholder="Add event details..."
                 value={eventDescription}
                 onChange={(e) => setEventDescription(e.target.value)}
                 rows={4}
-                className="bg-white/50 dark:bg-black/50"
+                className="bg-white/50 dark:bg-black/50 text-[#28282B] dark:text-[#E5E4E2] placeholder:text-[#28282B]/50 dark:placeholder:text-[#E5E4E2]/50"
               />
             </div>
           </div>
