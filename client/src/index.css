@@ -61,43 +61,63 @@ textarea {
 @tailwind utilities;
 
 :root {
-  /* Light Theme - Material Design 2 Color System */
-  /* Primary: Blue 600 (#1976D2) - Main brand color */
-  /* Secondary: Teal A400 (#1DE9B6) - Accent color */
-  /* Surface: White/Grey 50 for elevated surfaces */
-  /* Background: Grey 50 (#FAFAFA) */
-  /* Error: Red 600 (#E53935) */
+  /* ==========================================
+     Ocean Deep Blue Dark Theme
+     ========================================== */
   
-  --background: hsl(0, 0%, 98%); /* #FAFAFA - Grey 50 */
-  --foreground: hsl(0, 0%, 13%); /* #212121 - Grey 900 (high emphasis text) */
-  --card: hsl(0, 0%, 100%); /* #FFFFFF - White surface */
-  --card-foreground: hsl(0, 0%, 13%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(0, 0%, 13%);
-  --primary: hsl(207, 90%, 54%); /* #1976D2 - Blue 600 */
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(166, 77%, 51%); /* #1DE9B6 - Teal A400 */
-  --secondary-foreground: hsl(0, 0%, 13%);
-  --muted: hsl(0, 0%, 96%); /* #F5F5F5 - Grey 100 */
-  --muted-foreground: hsl(0, 0%, 38%); /* #616161 - Grey 700 (medium emphasis) */
-  --accent: hsl(166, 77%, 51%); /* Teal A400 for accent */
-  --accent-foreground: hsl(0, 0%, 13%);
-  --destructive: hsl(4, 90%, 58%); /* #F44336 - Red 500 */
-  --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(0, 0%, 88%); /* #E0E0E0 - Grey 300 */
-  --input: hsl(0, 0%, 100%);
-  --ring: hsl(207, 90%, 54%);
-  --chart-1: hsl(207, 90%, 54%); /* Blue 600 */
-  --chart-2: hsl(166, 77%, 51%); /* Teal A400 */
-  --chart-3: hsl(36, 100%, 50%); /* Amber 500 */
-  --chart-4: hsl(291, 64%, 42%); /* Purple 500 */
-  --chart-5: hsl(340, 82%, 52%); /* Pink 500 */
-  --sidebar: hsl(0, 0%, 98%);
-  --sidebar-foreground: hsl(0, 0%, 13%);
-  --sidebar-primary: hsl(207, 90%, 54%);
-  --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(0, 0%, 96%);
-  --sidebar-accent-foreground: hsl(0, 0%, 13%);
+  /* Ocean Deep Blue Colors */
+  --ocean-deep: #0a1929;      /* Dark background */
+  --ocean-blue: #132f4c;      /* Medium dark */
+  --ocean-medium: #1e4976;    /* Medium */
+  --ocean-light: #2e5a8e;     /* Light */
+  --ocean-accent: #4fc3f7;    /* Bright cyan */
+  --ocean-bright: #81d4fa;    /* Very bright */
+  --text-primary: #e3f2fd;    /* Light text */
+  --text-secondary: #90caf9;  /* Secondary text */
+  --border-color: rgba(79, 195, 247, 0.2);
+  --highlight: #29b6f6;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  
+  /* Radix UI Variables - Ocean Theme */
+  --background: #0a1929;
+  --foreground: #e3f2fd;
+  --card: #132f4c;
+  --card-foreground: #e3f2fd;
+  --popover: #132f4c;
+  --popover-foreground: #e3f2fd;
+  --primary: #4fc3f7;
+  --primary-foreground: #0a1929;
+  --secondary: #1e4976;
+  --secondary-foreground: #81d4fa;
+  --muted: #1e4976;
+  --muted-foreground: #90caf9;
+  --accent: #4fc3f7;
+  --accent-foreground: #0a1929;
+  --destructive: #ef5350;
+  --destructive-foreground: #ffffff;
+  --border: rgba(79, 195, 247, 0.2);
+  --input: #132f4c;
+  --ring: #4fc3f7;
+  --chart-1: #4fc3f7;
+  --chart-2: #66bb6a;
+  --chart-3: #ffa726;
+  --chart-4: #ba68c8;
+  --chart-5: #ef5350;
+  --sidebar: #0a1929;
+  --sidebar-foreground: #e3f2fd;
+  --sidebar-primary: #4fc3f7;
+  --sidebar-primary-foreground: #0a1929;
+  --sidebar-accent: #1e4976;
+  --sidebar-accent-foreground: #81d4fa;
   --sidebar-border: hsl(0, 0%, 88%);
   --sidebar-ring: hsl(207, 90%, 54%);
   
@@ -1604,4 +1624,213 @@ html.dark tfoot tr th .footer-total-blue {
 .embla__slide {
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================
+   Ocean Deep Blue Theme Base Styles
+   ========================================== */
+
+body {
+  background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-blue) 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Ocean Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ocean-deep);
+  border-left: 1px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ocean-medium);
+  border-radius: 6px;
+  border: 2px solid var(--ocean-deep);
+  transition: background var(--transition-normal);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ocean-light);
+}
+
+/* Ocean Selection */
+::selection {
+  background: rgba(79, 195, 247, 0.3);
+  color: var(--ocean-bright);
+}
+
+/* Ocean Button Gradients */
+.btn-ocean {
+  background: linear-gradient(135deg, var(--ocean-medium), var(--ocean-accent));
+  color: white;
+  transition: all var(--transition-normal);
+}
+
+.btn-ocean:hover {
+  background: linear-gradient(135deg, var(--ocean-accent), var(--ocean-bright));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 195, 247, 0.4);
+}
+
+/* Ocean Card Styles */
+.card-ocean {
+  background: rgba(19, 47, 76, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.card-ocean:hover {
+  border-color: var(--ocean-accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Ocean Input Styles */
+.input-ocean {
+  background: rgba(19, 47, 76, 0.5);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: all var(--transition-normal);
+}
+
+.input-ocean:focus {
+  border-color: var(--ocean-accent);
+  box-shadow: 0 0 15px rgba(79, 195, 247, 0.3);
+  background: rgba(19, 47, 76, 0.8);
+}
+
+/* Ocean Modal Overlay */
+.modal-ocean-overlay {
+  background: rgba(10, 25, 41, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+/* Ocean Gradient Text */
+.text-ocean-gradient {
+  background: linear-gradient(135deg, var(--ocean-accent), var(--ocean-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Ocean Glow Effect */
+.glow-ocean {
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.4);
+}
+
+/* Ocean Animation - Wave */
+@keyframes ocean-wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-ocean-wave {
+  animation: ocean-wave 2s ease-in-out infinite;
+}
+
+/* Ocean Animation - Pulse */
+@keyframes ocean-pulse {
+  0%, 100% { 
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(79, 195, 247, 0.7);
+  }
+  50% { 
+    opacity: 0.8;
+    box-shadow: 0 0 0 10px rgba(79, 195, 247, 0);
+  }
+}
+
+.animate-ocean-pulse {
+  animation: ocean-pulse 2s infinite;
+}
+
+/* Ocean Border Gradient */
+.border-ocean-gradient {
+  border: 2px solid transparent;
+  background-image: 
+    linear-gradient(var(--ocean-blue), var(--ocean-blue)),
+    linear-gradient(135deg, var(--ocean-accent), var(--ocean-bright));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Ocean Glass Effect */
+.glass-ocean {
+  background: rgba(19, 47, 76, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(79, 195, 247, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Ocean Table Hover */
+.table-ocean tbody tr:hover {
+  background: rgba(79, 195, 247, 0.15);
+  transform: translateX(5px);
+  box-shadow: -5px 0 15px rgba(79, 195, 247, 0.2);
+  transition: all var(--transition-fast);
+}
+
+/* Ocean Alert Success */
+.alert-ocean-success {
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  border-left: 4px solid #66bb6a;
+}
+
+/* Ocean Alert Info */
+.alert-ocean-info {
+  background: linear-gradient(135deg, var(--ocean-medium), var(--ocean-accent));
+  border-left: 4px solid var(--ocean-accent);
+}
+
+/* Ocean Alert Warning */
+.alert-ocean-warning {
+  background: linear-gradient(135deg, #f57c00, #ffa726);
+  border-left: 4px solid #ffa726;
+}
+
+/* Ocean Alert Error */
+.alert-ocean-error {
+  background: linear-gradient(135deg, #c62828, #ef5350);
+  border-left: 4px solid #ef5350);
+}
+
+/* Dark mode overrides for Ocean Theme */
+.dark {
+  --background: #0a1929;
+  --foreground: #e3f2fd;
+  --card: #132f4c;
+  --card-foreground: #e3f2fd;
+  --popover: #132f4c;
+  --popover-foreground: #e3f2fd;
+  --primary: #4fc3f7;
+  --primary-foreground: #0a1929;
+  --secondary: #1e4976;
+  --secondary-foreground: #81d4fa;
+  --muted: #1e4976;
+  --muted-foreground: #90caf9;
+  --accent: #4fc3f7;
+  --accent-foreground: #0a1929;
+  --destructive: #ef5350;
+  --destructive-foreground: #ffffff;
+  --border: rgba(79, 195, 247, 0.2);
+  --input: #132f4c;
+  --ring: #4fc3f7;
+}
+
+/* Ocean Link Styles */
+a {
+  color: var(--ocean-accent);
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--ocean-bright);
+  text-decoration: none;
 }
