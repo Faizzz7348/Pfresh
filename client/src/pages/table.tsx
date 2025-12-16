@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useTableData } from "@/hooks/use-table-data";
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { DataTable } from "@/components/data-table";
 import { AddImageSection } from "@/components/add-image-section";
 import { ImageEditSection } from "@/components/image-edit-section";
@@ -85,6 +86,79 @@ export default function TablePage() {
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { theme, toggleTheme} = useTheme();
+  
+  // Setup keyboard shortcuts
+  const { showShortcutsHelp } = useKeyboardShortcuts([
+    {
+      key: '/',
+      ctrlKey: true,
+      action: showShortcutsHelp,
+      description: 'Show keyboard shortcuts',
+      category: 'general',
+    },
+    {
+      key: 'k',
+      ctrlKey: true,
+      action: () => setCustomizationModalOpen(true),
+      description: 'Open column customization',
+      category: 'navigation',
+    },
+    {
+      key: 'n',
+      ctrlKey: true,
+      action: () => {
+        if (editMode) handleAddRow();
+      },
+      description: 'Add new row (edit mode)',
+      category: 'edit',
+    },
+    {
+      key: 's',
+      ctrlKey: true,
+      action: () => {
+        if (editMode) handleSaveData();
+      },
+      description: 'Save data (edit mode)',
+      category: 'edit',
+    },
+    {
+      key: 'e',
+      ctrlKey: true,
+      action: () => handleEditModeRequest(),
+      description: 'Toggle edit mode',
+      category: 'general',
+    },
+    {
+      key: 'f',
+      ctrlKey: true,
+      action: () => {
+        const searchInput = document.querySelector('input[placeholder*=\"Search\"]') as HTMLInputElement;
+        searchInput?.focus();
+      },
+      description: 'Focus search',
+      category: 'navigation',
+    },
+    {
+      key: 'h',
+      ctrlKey: true,
+      action: () => setShowTutorial(true),
+      description: 'Show help tutorial',
+      category: 'general',
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        setCustomizationModalOpen(false);
+        setOptimizationModalOpen(false);
+        setShareDialogOpen(false);
+        setSavedLinksModalOpen(false);
+        setBulkColorModalOpen(false);
+        setShowPasswordPrompt(false);
+      },
+      description: 'Close modals',
+      category: 'navigation',
+    },
+  ], true);
   
   // Toggle floating dock
   const toggleFloatingDock = () => {

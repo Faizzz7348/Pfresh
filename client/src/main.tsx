@@ -4,6 +4,7 @@ import "./index.css";
 import "leaflet/dist/leaflet.css";
 import { registerServiceWorker, setupPWAInstall } from "./lib/pwa";
 import { prefetchCommonData } from "./lib/queryClient";
+import { ErrorBoundary } from "./components/error-boundary";
 
 // Register Service Worker for PWA
 registerServiceWorker();
@@ -14,4 +15,8 @@ setupPWAInstall();
 // Prefetch common data for faster initial load
 prefetchCommonData();
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
+);
