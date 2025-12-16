@@ -39,6 +39,67 @@ export default function CustomTableView() {
     const saved = localStorage.getItem('showFloatingDock');
     return saved !== null ? JSON.parse(saved) : true;
   });
+  const [columnOrder, setColumnOrder] = useState<string[]>([]);
+  const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
+
+  // Load column preferences from database (same as main table)
+  useEffect(() => {
+    const loadLayoutPreferences = async () => {
+      if (columns.length === 0) return;
+
+      try {
+        // Helper function to get userId (same as in table.tsx)
+        const getUserId = () => {
+          let userId = localStorage.getItem('userId');
+          if (!userId) {
+            userId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+            localStorage.setItem('userId', userId);
+          }
+          return userId;
+        };
+
+        // Try to load from database first
+        const userId = getUserId();
+        const res = await fetch(`/api/layout?userId=${encodeURIComponent(userId)}`);
+        if (res.ok) {
+          const layout = await res.json();
+          const validVisibleColumnIds = Object.keys(layout.columnVisibility).filter(id => 
+            layout.columnVisibility[id] && columns.some(col => col.id === id)
+          );
+          const validColumnOrder = layout.columnOrder.filter((id: string) => 
+            columns.some(col => col.id === id)
+          );
+          
+          if (validVisibleColumnIds.length > 0) {
+            setVisibleColumns(validVisibleColumnIds);
+          }
+          if (validColumnOrder.length > 0) {
+            setColumnOrder(validColumnOrder);
+          }
+          return; // Successfully loaded from database
+        }
+      } catch (error) {
+        console.error('Failed to load layout preferences:', error);
+      }
+
+      // Use defaults if nothing saved - use all columns in sortOrder
+      setVisibleColumns(columns.map(col => col.id));
+      setColumnOrder(columns.map(col => col.id));
+    };
+
+    loadLayoutPreferences();
+  }, [columns]);
+
+  // Listen for storage changes to sync floating dock across pages
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'showFloatingDock' && e.newValue !== null) {
+        setShowFloatingDock(JSON.parse(e.newValue));
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // Apply filters and column visibility
   const { filteredRows, displayColumns, deliveryOptions } = useMemo(() => {
@@ -103,8 +164,17 @@ export default function CustomTableView() {
       filtered = filtered.filter(row => !deliveryFilters.includes(row.delivery));
     }
 
-    // Use all columns as visible, but hide latitude, longitude, and tollPrice (not in edit mode)
-    const visibleCols = columns.filter(col => 
+    // Apply column order and visibility (same logic as main table)
+    let visibleCols = columns;
+    if (columnOrder.length > 0 && visibleColumns.length > 0) {
+      visibleCols = columnOrder
+        .map(id => columns.find(col => col.id === id))
+        .filter((col): col is TableColumn => col !== undefined)
+        .filter(col => visibleColumns.includes(col.id));
+    }
+
+    // Hide latitude, longitude, and tollPrice columns (not in edit mode)
+    visibleCols = visibleCols.filter(col => 
       col.dataKey !== 'latitude' && col.dataKey !== 'longitude' && col.dataKey !== 'tollPrice'
     );
 
@@ -113,7 +183,7 @@ export default function CustomTableView() {
       displayColumns: visibleCols,
       deliveryOptions: deliveries
     };
-  }, [rows, columns, searchTerm, deliveryFilters, routeFilters]);
+  }, [rows, columns, searchTerm, deliveryFilters, routeFilters, columnOrder, visibleColumns]);
 
   // Calculate distances for kilometer column
   const rowsWithDistances = useMemo(() => {

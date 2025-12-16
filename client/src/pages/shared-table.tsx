@@ -35,6 +35,17 @@ export default function SharedTablePage() {
     return saved !== null ? JSON.parse(saved) : true;
   });
 
+  // Listen for storage changes to sync floating dock across pages
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'showFloatingDock' && e.newValue !== null) {
+        setShowFloatingDock(JSON.parse(e.newValue));
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   // Initialize filters from shared state
   useEffect(() => {
     if (sharedState?.tableState) {
