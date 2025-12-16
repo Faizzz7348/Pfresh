@@ -332,10 +332,10 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
             {/* Ambient glow */}
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-red-500/5 via-transparent to-orange-500/5 dark:from-red-400/10 dark:via-transparent dark:to-orange-400/10" />
           </div>
-          <DialogHeader>
-            <DialogTitle className="text-lg font-semibold bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg font-semibold bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent">
               Delete Saved Link
-            </DialogTitle>
+            </AlertDialogTitle>
             <AlertDialogDescription className="dark:text-gray-300">
               Are you sure you want to delete this saved link? This action cannot be undone.
             </AlertDialogDescription>
