@@ -3,10 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Pencil, Check, Link as LinkIcon, Type } from "lucide-react";
+import { Pencil, Check, Link as LinkIcon, Type, Home, Table, Calendar as CalendarIcon, BookOpen, LayoutGrid } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { FloatingDock } from "@/components/ui/floating-dock";
 
 interface FooterProps {
   editMode?: boolean;
@@ -131,6 +132,39 @@ export function Footer({ editMode = false }: FooterProps) {
         }`}
       >
         <div className="container mx-auto">
+          {/* Floating Dock */}
+          <div className="flex justify-center mb-4">
+            <FloatingDock
+              items={[
+                {
+                  title: "Home",
+                  icon: <Home className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                  href: "/",
+                },
+                {
+                  title: "Tables",
+                  icon: <Table className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                  href: "/",
+                },
+                {
+                  title: "Custom Tables",
+                  icon: <LayoutGrid className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                  href: "/custom-tables",
+                },
+                {
+                  title: "Calendar",
+                  icon: <CalendarIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                  href: "/calendar",
+                },
+                {
+                  title: "Help",
+                  icon: <BookOpen className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                  href: "/help",
+                },
+              ]}
+            />
+          </div>
+          
           <div className={`flex items-center justify-center gap-2 transition-all duration-700 ease-out text-[11px] ${
             isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
           }`}>
