@@ -36,6 +36,10 @@ export default function CalendarPage() {
   const [eventStart, setEventStart] = useState("");
   const [eventEnd, setEventEnd] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+  const [showFloatingDock, setShowFloatingDock] = useState(() => {
+    const saved = localStorage.getItem('showFloatingDock');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   // Load events from localStorage on mount
   useEffect(() => {
@@ -514,7 +518,7 @@ export default function CalendarPage() {
         </DialogContent>
       </Dialog>
 
-      <Footer editMode={false} />
+      <Footer editMode={false} showFloatingDock={showFloatingDock} />
     </>
   );
 }

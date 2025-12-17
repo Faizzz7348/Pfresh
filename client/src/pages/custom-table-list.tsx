@@ -31,6 +31,10 @@ export default function CustomTableList() {
   const [copiedId, setCopiedId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [deliveryFilter, setDeliveryFilter] = useState<string[]>([]);
+  const [showFloatingDock, setShowFloatingDock] = useState(() => {
+    const saved = localStorage.getItem('showFloatingDock');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { theme, toggleTheme } = useTheme();
@@ -689,7 +693,7 @@ export default function CustomTableList() {
       </Dialog>
         </div>
       </main>
-      <Footer />
+      <Footer editMode={false} showFloatingDock={showFloatingDock} />
     </>
   );
 }
