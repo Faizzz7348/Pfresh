@@ -132,6 +132,7 @@ export function ImageUploadModal({
       const newImage: MediaWithCaption = {
         url: imgbbUrl,
         caption: "",
+        description: "",
         type: "image"
       };
 
@@ -184,6 +185,7 @@ export function ImageUploadModal({
         uploadedImages.push({
           url: imgbbUrl,
           caption: file.name.replace(/\.[^/.]+$/, ""),
+          description: "",
           type: "image"
         });
       }

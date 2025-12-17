@@ -97,6 +97,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
           newItems.push({
             url: urlWithType,
             caption: file.name,
+            description: "",
             type: type,
             mimeType: file.type // Store MIME type for later use
           });
@@ -139,6 +140,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
       const media: MediaWithCaption = {
         url: url.trim(),
         caption: caption.trim(),
+        description: "",
         type: mediaType,
         ...(mediaType === "video" && thumbnail.trim() && { thumbnail: thumbnail.trim() }),
         ...(getMimeTypeFromDataURL(url) && { mimeType: getMimeTypeFromDataURL(url) })
@@ -159,6 +161,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
     const media: MediaWithCaption = {
       url: url.trim(),
       caption: caption.trim(),
+      description: "",
       type: mediaType,
       ...(mediaType === "video" && thumbnail.trim() && { thumbnail: thumbnail.trim() })
     };
@@ -178,6 +181,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
     const newItems: MediaWithCaption[] = urls.map(url => ({
       url: url.trim(),
       caption: '',
+      description: "",
       type: mediaType
     }));
     setAlbumItems([...albumItems, ...newItems]);

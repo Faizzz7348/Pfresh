@@ -135,9 +135,9 @@ export function prefetchCommonData() {
 // Clear memory cache periodically
 setInterval(() => {
   const now = Date.now();
-  for (const [key, value] of memoryCache.entries()) {
+  Array.from(memoryCache.entries()).forEach(([key, value]) => {
     if (now - value.timestamp > MEMORY_CACHE_TTL) {
       memoryCache.delete(key);
     }
-  }
+  });
 }, MEMORY_CACHE_TTL);

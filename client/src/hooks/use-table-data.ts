@@ -24,9 +24,6 @@ export function useTableData() {
     staleTime: 30 * 60 * 1000, // 30 minutes
     gcTime: 60 * 60 * 1000, // 1 hour
     placeholderData: () => getFromMemoryCache<TableColumn[]>('columns') || [],
-    onSuccess: (data) => {
-      setMemoryCache('columns', data);
-    },
   });
 
   // Create row mutation
@@ -57,7 +54,7 @@ export function useTableData() {
       if (previousRows) {
         queryClient.setQueryData<TableRow[]>(
           ["/api/table-rows"],
-          previousRows.map(row => row.id === id ? { ...row, ...updates } : row)
+          previousRows.map(row => row.id === id ? { ...row, ...updates } as TableRow : row)
         );
       }
       
