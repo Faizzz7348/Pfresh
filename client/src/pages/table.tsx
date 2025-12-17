@@ -48,6 +48,7 @@ export default function TablePage() {
   const [customizationModalOpen, setCustomizationModalOpen] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
+  const [layoutLoading, setLayoutLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [pendingAction, setPendingAction] = useState<'edit' | null>(null);
@@ -224,6 +225,8 @@ export default function TablePage() {
   useEffect(() => {
     const loadLayoutPreferences = async () => {
       if (columns.length === 0) return;
+      
+      setLayoutLoading(true);
 
       try {
         // Try to load from database first
@@ -272,6 +275,8 @@ export default function TablePage() {
       
       setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
       setColumnOrder(columns.map(col => col.id));
+      
+      setLayoutLoading(false);
     };
 
     loadLayoutPreferences();
@@ -1090,7 +1095,7 @@ export default function TablePage() {
 
 
   // Show simple spinner for data loading
-  if (isLoading) {
+  if (isLoading || layoutLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3 animate-in fade-in duration-300">

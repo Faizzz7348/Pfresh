@@ -40,11 +40,14 @@ export default function CustomTableView() {
   });
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
+  const [layoutLoading, setLayoutLoading] = useState(true);
 
   // Load column preferences from database (same as main table)
   useEffect(() => {
     const loadLayoutPreferences = async () => {
       if (columns.length === 0) return;
+      
+      setLayoutLoading(true);
 
       try {
         // Helper function to get userId (same as in table.tsx)
@@ -103,6 +106,8 @@ export default function CustomTableView() {
       
       setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
       setColumnOrder(columns.map(col => col.id));
+      
+      setLayoutLoading(false);
     };
 
     loadLayoutPreferences();
@@ -328,7 +333,7 @@ export default function CustomTableView() {
   }, []);
 
   // Show loading overlay until data is loaded AND minimum timer complete
-  if (isLoading || isLoadingTable || isLoadingRows || !minLoadingComplete) {
+  if (isLoading || isLoadingTable || isLoadingRows || !minLoadingComplete || layoutLoading) {
     return (
       <div className="min-h-screen relative">
         <LoadingOverlay message="Loading Custom Table..." type="ripple" />
