@@ -221,15 +221,27 @@ export default function TablePage() {
     },
   });
 
-  // Load column preferences from database (fallback to localStorage)
+  // Load column preferences - instant from defaults/localStorage, then sync with database
   useEffect(() => {
-    const loadLayoutPreferences = async () => {
-      if (columns.length === 0) return;
-      
-      setLayoutLoading(true);
-
+    if (columns.length === 0) return;
+    
+    // Set defaults immediately for instant render
+    const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery'];
+    const defaultVisibleColumns = columns
+      .filter(col => defaultVisibleColumnNames.includes(col.name))
+      .map(col => col.id);
+    
+    const latLngColumns = columns.filter(col => 
+      col.dataKey === 'latitude' || col.dataKey === 'longitude'
+    ).map(col => col.id);
+    
+    setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
+    setColumnOrder(columns.map(col => col.id));
+    setLayoutLoading(false); // Allow immediate render with defaults
+    
+    // Then load from database in background to sync
+    const syncLayoutPreferences = async () => {
       try {
-        // Try to load from database first
         const userId = getUserId();
         const res = await fetch(`/api/layout?userId=${encodeURIComponent(userId)}`);
         if (res.ok) {
@@ -253,33 +265,13 @@ export default function TablePage() {
           if (validColumnOrder.length > 0) {
             setColumnOrder(validColumnOrder);
           }
-          return; // Successfully loaded from database
-        } else if (res.status === 404) {
-          // No saved layout in database - clear localStorage and force use defaults
-          localStorage.removeItem('tableColumnPreferences');
-          // Skip to defaults below
         }
       } catch (error) {
-        // Fall through to defaults
+        // Silently fail, defaults already set
       }
-
-      // Use defaults if nothing saved
-      const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery'];
-      const defaultVisibleColumns = columns
-        .filter(col => defaultVisibleColumnNames.includes(col.name))
-        .map(col => col.id);
-      
-      const latLngColumns = columns.filter(col => 
-        col.dataKey === 'latitude' || col.dataKey === 'longitude'
-      ).map(col => col.id);
-      
-      setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
-      setColumnOrder(columns.map(col => col.id));
-      
-      setLayoutLoading(false);
     };
 
-    loadLayoutPreferences();
+    syncLayoutPreferences();
   }, [columns]);
 
   // Save column preferences to localStorage

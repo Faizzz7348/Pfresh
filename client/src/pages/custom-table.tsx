@@ -42,25 +42,37 @@ export default function CustomTableView() {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [layoutLoading, setLayoutLoading] = useState(true);
 
-  // Load column preferences from database (same as main table)
+  // Load column preferences - instant from defaults, then sync with database
   useEffect(() => {
-    const loadLayoutPreferences = async () => {
-      if (columns.length === 0) return;
-      
-      setLayoutLoading(true);
-
+    if (columns.length === 0) return;
+    
+    // Helper function to get userId
+    const getUserId = () => {
+      let userId = localStorage.getItem('userId');
+      if (!userId) {
+        userId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+        localStorage.setItem('userId', userId);
+      }
+      return userId;
+    };
+    
+    // Set defaults immediately for instant render
+    const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery'];
+    const defaultVisibleColumns = columns
+      .filter(col => defaultVisibleColumnNames.includes(col.name))
+      .map(col => col.id);
+    
+    const latLngColumns = columns.filter(col => 
+      col.dataKey === 'latitude' || col.dataKey === 'longitude'
+    ).map(col => col.id);
+    
+    setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
+    setColumnOrder(columns.map(col => col.id));
+    setLayoutLoading(false); // Allow immediate render
+    
+    // Then load from database in background to sync
+    const syncLayoutPreferences = async () => {
       try {
-        // Helper function to get userId (same as in table.tsx)
-        const getUserId = () => {
-          let userId = localStorage.getItem('userId');
-          if (!userId) {
-            userId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-            localStorage.setItem('userId', userId);
-          }
-          return userId;
-        };
-
-        // Try to load from database first
         const userId = getUserId();
         const res = await fetch(`/api/layout?userId=${encodeURIComponent(userId)}`);
         if (res.ok) {
@@ -84,33 +96,13 @@ export default function CustomTableView() {
           if (validColumnOrder.length > 0) {
             setColumnOrder(validColumnOrder);
           }
-          return; // Successfully loaded from database
-        } else if (res.status === 404) {
-          // No saved layout in database - clear localStorage and force use defaults
-          localStorage.removeItem('tableColumnPreferences');
-          // Skip to defaults below
         }
       } catch (error) {
-        // Fall through to defaults
+        // Silently fail, defaults already set
       }
-
-      // Use defaults if nothing saved
-      const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery'];
-      const defaultVisibleColumns = columns
-        .filter(col => defaultVisibleColumnNames.includes(col.name))
-        .map(col => col.id);
-      
-      const latLngColumns = columns.filter(col => 
-        col.dataKey === 'latitude' || col.dataKey === 'longitude'
-      ).map(col => col.id);
-      
-      setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
-      setColumnOrder(columns.map(col => col.id));
-      
-      setLayoutLoading(false);
     };
 
-    loadLayoutPreferences();
+    syncLayoutPreferences();
   }, [columns]);
 
   // Listen for storage changes to sync floating dock across pages
@@ -320,20 +312,8 @@ export default function CustomTableView() {
     setDeliveryFilters([]);
   };
 
-  // Enhanced loading state - ensure minimum 5 second display
-  const [minLoadingComplete, setMinLoadingComplete] = React.useState(false);
-
-  React.useEffect(() => {
-    // Minimum 5 second loading timer
-    const timer = setTimeout(() => {
-      setMinLoadingComplete(true);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Show loading overlay until data is loaded AND minimum timer complete
-  if (isLoading || isLoadingTable || isLoadingRows || !minLoadingComplete || layoutLoading) {
+  // Show loading overlay until data is loaded
+  if (isLoading || isLoadingTable || isLoadingRows || layoutLoading) {
     return (
       <div className="min-h-screen relative">
         <LoadingOverlay message="Loading Custom Table..." type="ripple" />

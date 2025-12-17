@@ -261,20 +261,8 @@ export default function SharedTablePage() {
     setDeliveryFilters([]);
   };
 
-  // Enhanced loading state - ensure minimum 10 second display
-  const [minLoadingComplete, setMinLoadingComplete] = React.useState(false);
-
-  React.useEffect(() => {
-    // Minimum 5 second loading timer
-    const timer = setTimeout(() => {
-      setMinLoadingComplete(true);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Show loading overlay until both data is loaded AND 10 seconds have passed
-  if (isLoading || isLoadingState || !minLoadingComplete) {
+  // Show loading overlay until data is loaded
+  if (isLoading || isLoadingState) {
     return (
       <div className="min-h-screen relative">
         <LoadingOverlay message="Loading shared table..." type="wave" />
