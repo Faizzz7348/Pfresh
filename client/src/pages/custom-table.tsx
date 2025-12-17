@@ -69,6 +69,12 @@ export default function CustomTableView() {
             columns.some(col => col.id === id)
           );
           
+          // Always ensure Kilometer column is visible
+          const kilometerColumn = columns.find(col => col.dataKey === 'kilometer');
+          if (kilometerColumn && !validVisibleColumnIds.includes(kilometerColumn.id)) {
+            validVisibleColumnIds.push(kilometerColumn.id);
+          }
+          
           if (validVisibleColumnIds.length > 0) {
             setVisibleColumns(validVisibleColumnIds);
           }
@@ -76,13 +82,26 @@ export default function CustomTableView() {
             setColumnOrder(validColumnOrder);
           }
           return; // Successfully loaded from database
+        } else if (res.status === 404) {
+          // No saved layout in database - clear localStorage and force use defaults
+          localStorage.removeItem('tableColumnPreferences');
+          // Skip to defaults below
         }
       } catch (error) {
-        console.error('Failed to load layout preferences:', error);
+        // Fall through to defaults
       }
 
-      // Use defaults if nothing saved - use all columns in sortOrder
-      setVisibleColumns(columns.map(col => col.id));
+      // Use defaults if nothing saved
+      const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery'];
+      const defaultVisibleColumns = columns
+        .filter(col => defaultVisibleColumnNames.includes(col.name))
+        .map(col => col.id);
+      
+      const latLngColumns = columns.filter(col => 
+        col.dataKey === 'latitude' || col.dataKey === 'longitude'
+      ).map(col => col.id);
+      
+      setVisibleColumns(defaultVisibleColumns.length > 0 ? defaultVisibleColumns : columns.map(col => col.id).filter(id => !latLngColumns.includes(id)));
       setColumnOrder(columns.map(col => col.id));
     };
 
