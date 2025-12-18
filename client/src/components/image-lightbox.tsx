@@ -63,8 +63,10 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
 
   if (images.length === 0) {
     return (
-      <div className="flex items-center justify-center w-10 h-8 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-        <ImageOff className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+      <div className="flex items-center justify-center mx-auto">
+        <div className="flex items-center justify-center w-10 h-8 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+          <ImageOff className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+        </div>
       </div>
     );
   }
