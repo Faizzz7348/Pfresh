@@ -377,15 +377,28 @@ export function DataTable({
       const columnIds = newColumnOrder.map((col) => col.id);
       onReorderColumns.mutate(columnIds);
     } else if (type === "row") {
-      // Optimize by using direct array manipulation
-      const newRowOrder = Array.from(rows);
-      const [reorderedRow] = newRowOrder.splice(source.index, 1);
-      newRowOrder.splice(destination.index, 0, reorderedRow);
+      // IMPORTANT: Use the ACTUAL visible rows (paginatedRows) for drag & drop
+      // This ensures we're reordering based on what user sees, not the full dataset
+      const currentPageRows = Array.from(paginatedRows);
+      const [reorderedRow] = currentPageRows.splice(source.index, 1);
+      currentPageRows.splice(destination.index, 0, reorderedRow);
+
+      // Calculate the actual position in the full dataset
+      const pageStartIndex = (currentPage - 1) * pageSize;
+      
+      // Build the complete new order
+      const allRowIds = rows.map(row => row.id);
+      const reorderedPageIds = currentPageRows.map(row => row.id);
+      
+      // Replace the current page's items in the full list
+      const newFullOrder = [...allRowIds];
+      reorderedPageIds.forEach((id, idx) => {
+        newFullOrder[pageStartIndex + idx] = id;
+      });
 
       // Use requestAnimationFrame for smoother UI updates
       requestAnimationFrame(() => {
-        const rowIds = newRowOrder.map((row) => row.id);
-        onReorderRows.mutate(rowIds);
+        onReorderRows.mutate(newFullOrder);
       });
     }
   };

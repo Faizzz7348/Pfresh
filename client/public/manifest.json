@@ -10,6 +10,7 @@
   "scope": "/",
   "categories": ["business", "productivity", "utilities"],
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/assets/icon-72x72.png",
@@ -74,9 +75,6 @@
       "form_factor": "wide"
     }
   ],
-  "categories": ["business", "productivity", "utilities"],
-  "prefer_related_applications": false,
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "launch_handler": {
     "client_mode": "navigate-existing"
   }
