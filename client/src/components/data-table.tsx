@@ -410,6 +410,7 @@ export function DataTable({
     row: TableRowType,
     column: TableColumn,
     rowIndex?: number,
+    sortState?: { column: string; direction: 'asc' | 'desc' } | null,
   ) => {
     switch (column.dataKey) {
       case "id":
@@ -419,8 +420,12 @@ export function DataTable({
         if (row.location === "QL Kitchen") {
           return "∞";
         }
+        // When sorting by 'order' (No), show the actual no value from database
+        // Otherwise show sequential position numbers
+        if (sortState?.column === 'order') {
+          return row.no || 0;
+        }
         // Display sequential numbers (1, 2, 3...) based on position in table
-        // This shows sequential numbers even if code has gaps
         if (rowIndex !== undefined) {
           const hasQLKitchenAtTop = paginatedRows[0]?.location === "QL Kitchen";
           return hasQLKitchenAtTop ? rowIndex : rowIndex + 1;
@@ -1349,7 +1354,7 @@ export function DataTable({
                                   ) : column.dataKey === "delivery" ? (
                                     editMode && column.isEditable === "true" ? (
                                       <EditableCell
-                                        value={getCellValue(row, column, index)}
+                                        value={getCellValue(row, column, index, sortState)}
                                         type="select"
                                         options={deliveryOptions}
                                         dataKey={column.dataKey}
@@ -1364,13 +1369,13 @@ export function DataTable({
                                       />
                                     ) : (
                                       <span className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">
-                                        {getCellValue(row, column, index) || '—'}
+                                        {getCellValue(row, column, index, sortState) || '—'}
                                       </span>
                                     )
                                   ) : column.dataKey === "route" ? (
                                     editMode && column.isEditable === "true" ? (
                                       <EditableCell
-                                        value={getCellValue(row, column, index)}
+                                        value={getCellValue(row, column, index, sortState)}
                                         type="select"
                                         options={routeOptions}
                                         dataKey={column.dataKey}
@@ -1390,7 +1395,7 @@ export function DataTable({
                                     )
                                   ) : column.dataKey === "id" ? (
                                     <span className="font-mono text-slate-600 dark:text-slate-300" style={{ fontSize: '10px' }}>
-                                      {getCellValue(row, column, index)}
+                                      {getCellValue(row, column, index, sortState)}
                                     </span>
                                   ) : column.dataKey === "no" && editMode && row.location !== "QL Kitchen" ? (
                                     <EditableCell
@@ -1407,7 +1412,7 @@ export function DataTable({
                                   ) : editMode &&
                                     column.isEditable === "true" ? (
                                     <EditableCell
-                                      value={getCellValue(row, column, index)}
+                                      value={getCellValue(row, column, index, sortState)}
                                       type={column.type}
                                       options={column.options || undefined}
                                       dataKey={column.dataKey}
@@ -1432,11 +1437,11 @@ export function DataTable({
                                           showBelow={index === 0 && index !== paginatedRows.length - 1}
                                         >
                                           <span className="cursor-help">
-                                            {getCellValue(row, column, index)}
+                                            {getCellValue(row, column, index, sortState)}
                                           </span>
                                         </MobileTooltip>
                                       ) : (
-                                        getCellValue(row, column, index)
+                                        getCellValue(row, column, index, sortState)
                                       )}
                                     </span>
                                   )}
