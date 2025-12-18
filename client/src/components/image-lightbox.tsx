@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MediaWithCaption } from "@shared/schema";
-import { Loader2 } from "lucide-react";
+import { Loader2, ImageOff } from "lucide-react";
 
 interface ImageLightboxProps {
   images: MediaWithCaption[];
@@ -62,7 +62,11 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
   }, [images, rowId]);
 
   if (images.length === 0) {
-    return <span className="text-xs text-muted-foreground">No image</span>;
+    return (
+      <div className="flex items-center justify-center w-10 h-8 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+        <ImageOff className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+      </div>
+    );
   }
 
   // Build sub-html with title and description

@@ -189,6 +189,7 @@ export default function CalendarPage() {
         .fc-col-header-cell {
           font-weight: 600;
           padding: 8px 4px;
+          color: #28282B;
         }
         
         .fc-daygrid-day {
@@ -197,6 +198,7 @@ export default function CalendarPage() {
         
         .fc-daygrid-day-number {
           padding: 4px;
+          color: #28282B;
         }
         
         .fc-event {
@@ -208,6 +210,7 @@ export default function CalendarPage() {
         .fc-toolbar-title {
           font-size: 1.5rem;
           font-weight: 700;
+          color: #28282B;
         }
         
         .fc-button {
@@ -216,6 +219,7 @@ export default function CalendarPage() {
           font-size: 14px;
           font-weight: 500;
           text-transform: capitalize;
+          color: #28282B;
         }
         
         .fc-button-primary {
