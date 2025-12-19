@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useTableData } from "@/hooks/use-table-data";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { DataTable } from "@/components/data-table";
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { AddImageSection } from "@/components/add-image-section";
 import { ImageEditSection } from "@/components/image-edit-section";
 import { ColumnCustomizationModal } from "@/components/column-customization-modal";
@@ -1526,46 +1527,25 @@ export default function TablePage() {
 
       {/* Main Table */}
       <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-500">
-        <DataTable
-        rows={rowsWithDistances}
-        columns={displayColumns}
-        editMode={editMode}
-        onUpdateRow={updateRow}
-        onDeleteRow={deleteRow}
-        onReorderRows={reorderRows}
-        onReorderColumns={reorderColumns}
-        onDeleteColumn={deleteColumn}
-        onSelectRowForImage={(rowId) => {
-          if (rowId === 'access-denied') {
-            toast({
-              title: "Access Denied",
-              description: "Please enable Edit mode to add images.",
-              variant: "destructive",
-            });
-          } else {
-            setSelectedRowForImage(rowId);
-          }
-        }}
-        onShowCustomization={() => setCustomizationModalOpen(true)}
-        onOptimizeRoute={() => setOptimizationModalOpen(true)}
-        onShareTable={() => setShareDialogOpen(true)}
-        onSavedLinks={() => setSavedLinksModalOpen(true)}
-        isAuthenticated={isAuthenticated}
-        isLoading={exitingEditMode}
-        isFiltered={searchTerm !== "" || filterValue.length > 0 || deliveryFilterValue.length > 0}
-        // Search and filter props
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        filterValue={filterValue}
-        onFilterValueChange={setFilterValue}
-        deliveryFilterValue={deliveryFilterValue}
-        onDeliveryFilterValueChange={setDeliveryFilterValue}
-        routeOptions={routeOptions}
-        deliveryOptions={deliveryOptions}
-        onClearAllFilters={clearAllFilters}
-        filteredRowsCount={filteredRows.length}
-        totalRowsCount={rows.length}
-      />
+        <div className="card p-4">
+          <DataTable 
+            value={rowsWithDistances} 
+            scrollable 
+            scrollHeight="600px" 
+            virtualScrollerOptions={{ itemSize: 46 }} 
+            tableStyle={{ minWidth: '50rem' }}
+            loading={exitingEditMode}
+          >
+            {displayColumns.map((column) => (
+              <Column 
+                key={column.id}
+                field={column.dataKey}
+                header={column.name}
+                style={{ width: `${100 / displayColumns.length}%` }}
+              />
+            ))}
+          </DataTable>
+        </div>
       </div>
 
       {/* Column Customization Modal */}

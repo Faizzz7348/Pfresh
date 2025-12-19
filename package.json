@@ -73,6 +73,8 @@
     "openid-client": "^6.7.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.7",
     "qr-decode": "^0.0.3",
     "qr-scanner": "^1.4.2",
     "react": "^18.3.1",
