@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar as CalendarIcon, Plus, Edit, Trash2, ArrowLeft, Sun, Moon, Clock } from "lucide-react";
+import { Calendar as CalendarIcon, Plus, Edit, Trash2, ArrowLeft, Sun, Moon, Clock, Pencil } from "lucide-react";
 
 interface CalendarEvent {
   id: string;
