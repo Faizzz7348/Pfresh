@@ -17,12 +17,24 @@ interface EditableCellProps {
 export function EditableCell({ value, type, onSave, options, dataKey }: EditableCellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [editValue, setEditValue] = useState(value);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    setEditValue(value);
-  }, [value]);
+    // Only update editValue when not currently saving
+    if (!isSaving) {
+      setEditValue(value);
+    }
+  }, [value, isSaving]);
+
+  // Reset isSaving when popover closes
+  useEffect(() => {
+    if (!isOpen) {
+      setIsSaving(false);
+    }
+  }, [isOpen]);
 
   const handleSave = async () => {
+    setIsSaving(true);
     let processedValue = editValue;
     
     if (type === 'number') {
@@ -32,13 +44,18 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       processedValue = processedValue.toFixed(2);
     }
     
-    await onSave(processedValue);
-    setIsOpen(false);
+    try {
+      await onSave(processedValue);
+      setIsOpen(false);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
     setEditValue(value);
     setIsOpen(false);
+    setIsSaving(false);
   };
 
   const getPlaceholder = () => {
@@ -77,9 +94,14 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             <Select 
               value={editValue || ''} 
               onValueChange={async (newValue) => {
+                setIsSaving(true);
                 setEditValue(newValue);
-                await onSave(newValue);
-                setIsOpen(false);
+                try {
+                  await onSave(newValue);
+                  setIsOpen(false);
+                } finally {
+                  setIsSaving(false);
+                }
               }}
             >
               <SelectTrigger className="w-full h-9 text-sm">
@@ -175,9 +197,14 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             <Select 
               value={editValue || ''} 
               onValueChange={async (newValue) => {
+                setIsSaving(true);
                 setEditValue(newValue);
-                await onSave(newValue);
-                setIsOpen(false);
+                try {
+                  await onSave(newValue);
+                  setIsOpen(false);
+                } finally {
+                  setIsSaving(false);
+                }
               }}
             >
               <SelectTrigger className="w-full h-9 text-sm">

@@ -367,39 +367,51 @@ export function DataTable({
     if (!result.destination) return;
     if (result.destination.index === result.source.index) return;
 
+    // Only allow drag in edit mode
+    if (!editMode) return;
+
     const { source, destination, type } = result;
 
-    if (type === "column") {
-      const newColumnOrder = Array.from(columns);
-      const [reorderedColumn] = newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, reorderedColumn);
+    try {
+      if (type === "column") {
+        const newColumnOrder = Array.from(columns);
+        const [reorderedColumn] = newColumnOrder.splice(source.index, 1);
+        newColumnOrder.splice(destination.index, 0, reorderedColumn);
 
-      const columnIds = newColumnOrder.map((col) => col.id);
-      
-      // Wait for mutation to complete before UI update
-      await onReorderColumns.mutateAsync(columnIds);
-    } else if (type === "row") {
-      // IMPORTANT: Use the ACTUAL visible rows (paginatedRows) for drag & drop
-      // This ensures we're reordering based on what user sees, not the full dataset
-      const currentPageRows = Array.from(paginatedRows);
-      const [reorderedRow] = currentPageRows.splice(source.index, 1);
-      currentPageRows.splice(destination.index, 0, reorderedRow);
+        const columnIds = newColumnOrder.map((col) => col.id);
+        
+        // Wait for mutation to complete before UI update
+        await onReorderColumns.mutateAsync(columnIds);
+      } else if (type === "row") {
+        // IMPORTANT: Use the ACTUAL visible rows (paginatedRows) for drag & drop
+        // This ensures we're reordering based on what user sees, not the full dataset
+        const currentPageRows = Array.from(paginatedRows);
+        const [reorderedRow] = currentPageRows.splice(source.index, 1);
+        currentPageRows.splice(destination.index, 0, reorderedRow);
 
-      // Calculate the actual position in the full dataset
-      const pageStartIndex = (currentPage - 1) * pageSize;
-      
-      // Build the complete new order
-      const allRowIds = rows.map(row => row.id);
-      const reorderedPageIds = currentPageRows.map(row => row.id);
-      
-      // Replace the current page's items in the full list
-      const newFullOrder = [...allRowIds];
-      reorderedPageIds.forEach((id, idx) => {
-        newFullOrder[pageStartIndex + idx] = id;
+        // Calculate the actual position in the full dataset
+        const pageStartIndex = (currentPage - 1) * pageSize;
+        
+        // Build the complete new order
+        const allRowIds = rows.map(row => row.id);
+        const reorderedPageIds = currentPageRows.map(row => row.id);
+        
+        // Replace the current page's items in the full list
+        const newFullOrder = [...allRowIds];
+        reorderedPageIds.forEach((id, idx) => {
+          newFullOrder[pageStartIndex + idx] = id;
+        });
+
+        // Wait for mutation to complete before UI update
+        await onReorderRows.mutateAsync(newFullOrder);
+      }
+    } catch (error) {
+      console.error('Drag and drop error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to reorder. Please try again.",
+        variant: "destructive",
       });
-
-      // Wait for mutation to complete before UI update
-      await onReorderRows.mutateAsync(newFullOrder);
     }
   };
 
@@ -1134,6 +1146,7 @@ export function DataTable({
                         key={column.id}
                         draggableId={column.id}
                         index={index}
+                        isDragDisabled={!editMode}
                       >
                         {(provided) => (
                           <TableHead
@@ -1256,6 +1269,7 @@ export function DataTable({
                           key={row.id}
                           draggableId={row.id}
                           index={index}
+                          isDragDisabled={!editMode}
                         >
                           {(provided, snapshot) => (
                             <TableRow
