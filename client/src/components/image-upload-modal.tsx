@@ -354,7 +354,7 @@ export function ImageUploadModal({
               <TabsContent value="file" className="mt-4">
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all"
+                  className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 dark:hover:border-blue-400 dark:hover:bg-blue-900/40 transition-all"
                 >
                   <Upload className="w-10 h-10 mx-auto mb-3 text-gray-400" />
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -488,9 +488,9 @@ export function ImageUploadModal({
                                   e.preventDefault();
                                   handleEdit(index);
                                 }}
-                                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded transition-colors"
                               >
-                                <Edit2 className="w-3 h-3 text-gray-400 hover:text-blue-600" />
+                                <Edit2 className="w-3 h-3 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400" />
                               </button>
                             )}
                           </div>
@@ -519,9 +519,9 @@ export function ImageUploadModal({
                                   e.preventDefault();
                                   handleEdit(index);
                                 }}
-                                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded transition-colors"
                               >
-                                <Edit2 className="w-3 h-3 text-gray-400 hover:text-blue-600" />
+                                <Edit2 className="w-3 h-3 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400" />
                               </button>
                             )}
                           </div>

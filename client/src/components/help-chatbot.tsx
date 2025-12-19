@@ -461,7 +461,7 @@ export function HelpChatbot({ open, onOpenChange }: HelpChatbotProps) {
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="h-8 w-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="h-8 w-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60"
                 title="Toggle theme"
               >
                 {theme === 'dark' ? (
@@ -476,7 +476,7 @@ export function HelpChatbot({ open, onOpenChange }: HelpChatbotProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleClearChat}
-                className="h-8 w-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="h-8 w-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60"
                 title="Clear chat"
               >
                 <Trash2 className="w-4 h-4 text-red-500" />

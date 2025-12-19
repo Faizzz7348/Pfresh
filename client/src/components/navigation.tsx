@@ -152,7 +152,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               {/* Saved Links */}
               <DropdownMenuItem 
                 onClick={onSavedLinks}
-                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:scale-[1.02] active:scale-[0.98]"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-amber-50 dark:hover:bg-amber-900/50 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-saved-links"
               >
                 <Bookmark className="w-4 h-4 mr-2 text-amber-500 dark:text-amber-400 transition-transform duration-200 group-hover:scale-110" />
@@ -162,7 +162,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               {/* Custom Tables */}
               <DropdownMenuItem 
                 onClick={() => navigate('/custom-tables')}
-                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:scale-[1.02] active:scale-[0.98]"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-purple-50 dark:hover:bg-purple-900/50 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-custom-tables"
               >
                 <ListChecks className="w-4 h-4 mr-2 text-purple-500 dark:text-purple-400 transition-transform duration-200 group-hover:scale-110" />
@@ -172,7 +172,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               {/* Calendar */}
               <DropdownMenuItem 
                 onClick={() => navigate('/calendar')}
-                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:scale-[1.02] active:scale-[0.98]"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-blue-50 dark:hover:bg-blue-900/50 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-calendar"
               >
                 <Calendar className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400 transition-transform duration-200 group-hover:scale-110" />
@@ -182,7 +182,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               {/* Help Guide */}
               <DropdownMenuItem 
                 onClick={() => navigate('/help')}
-                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-green-50 dark:hover:bg-green-950/30 hover:scale-[1.02] active:scale-[0.98]"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-green-50 dark:hover:bg-green-900/50 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-help-guide"
               >
                 <BookOpen className="w-4 h-4 mr-2 text-green-600 dark:text-green-400 transition-transform duration-200 group-hover:scale-110" />
@@ -196,7 +196,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 <>
                   <DropdownMenuItem 
                     onClick={onAddRow}
-                    className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98]"
+                    className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 hover:scale-[1.02] active:scale-[0.98]"
                     data-testid="menu-add-row"
                   >
                     <Rows className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
@@ -209,7 +209,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                         const addColumnButton = document.querySelector('[data-testid="button-add-column"]') as HTMLButtonElement;
                         if (addColumnButton) addColumnButton.click();
                       }}
-                      className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98]"
+                      className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 hover:scale-[1.02] active:scale-[0.98]"
                       data-testid="menu-add-column"
                     >
                       <Plus className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
@@ -219,7 +219,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   {onBulkColorEdit && (
                     <DropdownMenuItem 
                       onClick={onBulkColorEdit}
-                      className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:scale-[1.02] active:scale-[0.98]"
+                      className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-purple-50 dark:hover:bg-purple-900/50 hover:scale-[1.02] active:scale-[0.98]"
                       data-testid="menu-bulk-color"
                     >
                       <Palette className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400 transition-transform duration-200 group-hover:scale-110" />
@@ -229,7 +229,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   <DropdownMenuSeparator className="bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent my-2" />
                   <DropdownMenuItem 
                     onClick={onEditModeRequest}
-                    className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-950/30 hover:scale-[1.02] active:scale-[0.98] text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+                    className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-900/50 hover:scale-[1.02] active:scale-[0.98] text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
                     data-testid="menu-exit-edit"
                   >
                     <DoorOpen className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
@@ -239,7 +239,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               ) : (
                 <DropdownMenuItem 
                   onClick={onEditModeRequest}
-                  className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-950/30 hover:scale-[1.02] active:scale-[0.98]"
+                  className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-900/50 hover:scale-[1.02] active:scale-[0.98]"
                   data-testid="menu-enter-edit"
                 >
                   <Settings className="w-4 h-4 mr-2 text-red-900 dark:text-red-400 transition-transform duration-200 group-hover:scale-110" />
