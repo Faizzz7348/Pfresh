@@ -42,6 +42,11 @@ export default function CalendarPage() {
     return saved !== null ? JSON.parse(saved) : true;
   });
   
+  // Tooltip state
+  const [tooltipEvent, setTooltipEvent] = useState<CalendarEvent | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   // Edit mode with persistence
   const [editMode, setEditMode] = useState(() => {
     const savedEditMode = localStorage.getItem('calendarEditMode');
@@ -422,7 +427,7 @@ export default function CalendarPage() {
 
 
           {/* Calendar */}
-          <div>
+          <div className="relative">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -434,51 +439,29 @@ export default function CalendarPage() {
               events={events}
               dateClick={handleDateClick}
               eventClick={handleEventClick}
-              editable={true}
+              editable={editMode}
               selectable={true}
               selectMirror={true}
               dayMaxEvents={true}
               height="auto"
-              eventContent={(eventInfo) => {
-                const event = events.find(e => e.id === eventInfo.event.id);
-                const startTime = new Date(eventInfo.event.start!).toLocaleTimeString('en-US', { 
-                  hour: '2-digit', 
-                  minute: '2-digit',
-                  hour12: true 
-                });
-                const endTime = eventInfo.event.end ? new Date(eventInfo.event.end).toLocaleTimeString('en-US', { 
-                  hour: '2-digit', 
-                  minute: '2-digit',
-                  hour12: true 
-                }) : '';
-                
-                return (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <div className="cursor-pointer p-1 overflow-hidden text-ellipsis whitespace-nowrap w-full">
-                        {eventInfo.event.title}
-                      </div>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 rounded-2xl p-4">
-                      <div className="space-y-3">
-                        <div>
-                          <h3 className="font-semibold text-lg text-[#28282B] dark:text-[#E5E4E2] mb-2">
-                            {eventInfo.event.title}
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70">
-                          <Clock className="w-4 h-4" />
-                          <span>{startTime}{endTime ? ` - ${endTime}` : ''}</span>
-                        </div>
-                        {event?.description && (
-                          <div className="text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70 mt-2 pt-2 border-t border-gray-200 dark:border-white/10">
-                            {event.description}
-                          </div>
-                        )}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                );
+              eventMouseEnter={(info) => {
+                if (!editMode) {
+                  const event = events.find(e => e.id === info.event.id);
+                  if (event) {
+                    const rect = info.el.getBoundingClientRect();
+                    setTooltipEvent(event);
+                    setTooltipPosition({
+                      x: rect.left + rect.width / 2,
+                      y: rect.top - 10
+                    });
+                    setShowTooltip(true);
+                  }
+                }
+              }}
+              eventMouseLeave={() => {
+                if (!editMode) {
+                  setShowTooltip(false);
+                }
               }}
               eventDrop={(info) => {
                 const updatedEvent = events.find(e => e.id === info.event.id);
@@ -501,6 +484,48 @@ export default function CalendarPage() {
                 }
               }}
             />
+            
+            {/* Custom Tooltip */}
+            {showTooltip && tooltipEvent && (
+              <div 
+                className="fixed z-[9999] pointer-events-none"
+                style={{
+                  left: `${tooltipPosition.x}px`,
+                  top: `${tooltipPosition.y}px`,
+                  transform: 'translate(-50%, -100%)'
+                }}
+              >
+                <div className="bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 rounded-2xl p-4 shadow-2xl max-w-[320px] animate-in fade-in-0 zoom-in-95 duration-200">
+                  <div className="space-y-3">
+                    <div>
+                      <h3 className="font-semibold text-lg text-[#28282B] dark:text-[#E5E4E2] mb-2">
+                        {tooltipEvent.title}
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70">
+                      <Clock className="w-4 h-4" />
+                      <span>
+                        {new Date(tooltipEvent.start).toLocaleTimeString('en-US', { 
+                          hour: '2-digit', 
+                          minute: '2-digit',
+                          hour12: true 
+                        })}
+                        {tooltipEvent.end && ` - ${new Date(tooltipEvent.end).toLocaleTimeString('en-US', { 
+                          hour: '2-digit', 
+                          minute: '2-digit',
+                          hour12: true 
+                        })}`}
+                      </span>
+                    </div>
+                    {tooltipEvent.description && (
+                      <div className="text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70 mt-2 pt-2 border-t border-gray-200 dark:border-white/10">
+                        {tooltipEvent.description}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>
