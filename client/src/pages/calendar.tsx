@@ -466,8 +466,8 @@ export default function CalendarPage() {
               editable={editMode}
               selectable={true}
               selectMirror={true}
-              dayMaxEvents={1}
-              dayMaxEventRows={1}
+              dayMaxEvents={0}
+              dayMaxEventRows={0}
               moreLinkText={(num) => `${num}+ events`}
               moreLinkClick={(info) => {
                 // Get the date and events for that date
