@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Footer } from "@/components/footer";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 import { useLocation } from "wouter";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -27,7 +27,7 @@ interface CalendarEvent {
 }
 
 export default function CalendarPage() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -395,7 +395,7 @@ export default function CalendarPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={toggleTheme}
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 active:shadow-none"
                 data-testid="button-toggle-theme"
                 title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}

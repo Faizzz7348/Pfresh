@@ -23,7 +23,7 @@ import {
 import type { TableRow, CustomTable } from "@shared/schema";
 import { Footer } from "@/components/footer";
 import { LoadingOverlay } from "@/components/skeleton-loader";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 import { useLocation } from "wouter";
 
 export default function CustomTableList() {

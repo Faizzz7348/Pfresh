@@ -6,7 +6,7 @@ import { Send, Bot, User, Languages, Trash2, Copy, Check, Sparkles, Download, Mo
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 
 interface Message {
   id: string;
@@ -302,7 +302,7 @@ export function HelpChatbot({ open, onOpenChange }: HelpChatbotProps) {
   const [copiedId, setCopiedId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   
   // Auto scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -460,7 +460,7 @@ export function HelpChatbot({ open, onOpenChange }: HelpChatbotProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={toggleTheme}
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className="h-8 w-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60"
                 title="Toggle theme"
               >

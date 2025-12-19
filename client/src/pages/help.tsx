@@ -4,12 +4,12 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HelpChatbot } from "@/components/help-chatbot";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 
 export default function HelpPage() {
   const [, setLocation] = useLocation();
   const [showChatbot, setShowChatbot] = useState(true); // Changed to true to auto-open
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   // No need for timer, chatbot opens immediately
   // Auto-redirect back to home when chatbot is closed

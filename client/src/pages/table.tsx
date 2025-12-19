@@ -26,7 +26,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { Search, Filter, X, ChevronDown, ChevronUp, Edit3, Plus, Trash2, Pencil, Sun, Moon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 import { TableColumn, type Page, type InsertPage } from "@shared/schema";
 import { generateTngValues } from "@/utils/tng-generator";
 import { calculateDistance } from "@/utils/distance";
@@ -86,7 +86,7 @@ export default function TablePage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
-  const { theme, toggleTheme} = useTheme();
+  const { theme, setTheme} = useTheme();
   
   // Toggle floating dock
   const toggleFloatingDock = () => {
@@ -1137,7 +1137,7 @@ export default function TablePage() {
           }}
           isAuthenticated={true}
           theme={theme}
-          onToggleTheme={toggleTheme}
+          onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           showFloatingDock={showFloatingDock}
           onToggleFloatingDock={toggleFloatingDock}
         />

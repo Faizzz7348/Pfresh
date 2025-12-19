@@ -7,33 +7,10 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
     
-    <script>
-      // Prevent flash of unstyled content (FOUC) for dark mode
-      (function() {
-        const theme = localStorage.getItem('vite-ui-theme') || 'system';
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        const actualTheme = theme === 'system' ? systemTheme : theme;
-        document.documentElement.classList.add(actualTheme);
-      })();
-    </script>
-    
     <!-- PWA Meta Tags -->
     <meta name="description" content="Professional delivery route management and optimization system" />
     <meta name="color-scheme" content="light dark" />
     
-    <!-- Dynamic Theme Color for Browser Tab -->
-    <script>
-      // Set theme-color based on user's theme preference
-      (function() {
-        const theme = localStorage.getItem('vite-ui-theme') || 'system';
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        const actualTheme = theme === 'system' ? systemTheme : theme;
-        
-        // Set theme color for browser tab
-        const themeColor = actualTheme === 'dark' ? '#000000' : '#ffffff';
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
-      })();
-    </script>
     <meta name="theme-color" content="#ffffff" />
     
     <!-- PWA Manifest -->
