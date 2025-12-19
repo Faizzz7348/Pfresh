@@ -1222,6 +1222,56 @@ export function DataTable({
                   className="pt-2 motion-layer zoom-in"
                   key={`page-${currentPage}`}
                 >
+                  {/* Frozen Row - QL Kitchen */}
+                  {(() => {
+                    const qlKitchenRow = rows.find(row => row.location === "QL Kitchen");
+                    if (qlKitchenRow && !isLoading) {
+                      return (
+                        <TableRow
+                          className="table-row-glass group sticky top-[52px] z-10 bg-yellow-50 dark:bg-yellow-900/20 border-b-2 border-yellow-400"
+                        >
+                          <TableCell
+                            className="p-2 w-16 whitespace-nowrap border-r border-border"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "10px",
+                            }}
+                          >
+                            <div className="flex gap-1 justify-center items-center">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => onSelectRowForImage(qlKitchenRow.id)}
+                                className="h-7 w-7 text-gray-600 hover:text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50"
+                              >
+                                <ImageIcon className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                          {visibleColumns.map((column) => (
+                            <TableCell
+                              key={column.id}
+                              className="p-2 text-center border-r border-border"
+                              style={{ fontSize: "10px" }}
+                              colSpan={column.dataKey === "location" ? 3 : 1}
+                            >
+                              {column.dataKey === "images" ? (
+                                <div className="flex gap-1 justify-center">
+                                  {qlKitchenRow.images?.slice(0, 3).map((_, idx) => (
+                                    <div key={idx} className="w-6 h-6 bg-blue-200 rounded" />
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="font-semibold">{String(qlKitchenRow[column.dataKey as keyof typeof qlKitchenRow] || "")}</span>
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      );
+                    }
+                    return null;
+                  })()}
+                  
                   {isLoading
                     ? Array.from({ length: Math.min(pageSize, 5) }).map(
                         (_, index) => (
@@ -1286,7 +1336,7 @@ export function DataTable({
                         </td>
                       </tr>
                     )
-                    : paginatedRows.map((row, index) => (
+                    : paginatedRows.filter(row => row.location !== "QL Kitchen").map((row, index) => (
                         <Draggable
                           key={row.id}
                           draggableId={row.id}
