@@ -356,12 +356,6 @@ export default function CalendarPage() {
                   <CalendarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-                    Delivery Calendar
-                  </h1>
-                  <p className="text-muted-foreground text-sm">
-                    Schedule and manage your delivery routes
-                  </p>
                 </div>
               </div>
               <Button

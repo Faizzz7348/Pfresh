@@ -1807,4 +1807,7 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+// Use MemStorage (local in-memory storage) in development when no DATABASE_URL is set
+export const storage = (process.env.NODE_ENV === 'development' && !process.env.DATABASE_URL)
+  ? new MemStorage() 
+  : new DatabaseStorage();
