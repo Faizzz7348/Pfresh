@@ -47,11 +47,6 @@ export default function CalendarPage() {
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [showTooltip, setShowTooltip] = useState(false);
   
-  // Multiple events popover state
-  const [showEventsPopover, setShowEventsPopover] = useState(false);
-  const [selectedDateEvents, setSelectedDateEvents] = useState<CalendarEvent[]>([]);
-  const [selectedDateInfo, setSelectedDateInfo] = useState<{ day: string; date: string } | null>(null);
-  
   // Edit mode with persistence
   const [editMode, setEditMode] = useState(() => {
     const savedEditMode = localStorage.getItem('calendarEditMode');
@@ -447,28 +442,7 @@ export default function CalendarPage() {
               editable={editMode}
               selectable={true}
               selectMirror={true}
-              dayMaxEvents={0}
-              dayMaxEventRows={0}
-              moreLinkText={(num) => `${num}+ events`}
-              moreLinkClick={(info) => {
-                // Get the date and events for that date
-                const dateStr = info.date.toISOString().split('T')[0];
-                const eventsOnDate = events.filter(event => {
-                  const eventDate = new Date(event.start).toISOString().split('T')[0];
-                  return eventDate === dateStr;
-                });
-                
-                if (eventsOnDate.length > 0) {
-                  setSelectedDateEvents(eventsOnDate);
-                  setSelectedDateInfo({
-                    day: info.date.toLocaleDateString('en-US', { weekday: 'long' }),
-                    date: info.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-                  });
-                  setShowEventsPopover(true);
-                }
-                
-                // Prevent FullCalendar's default popover - return void
-              }}
+              dayMaxEvents={true}
               eventTimeFormat={{
                 hour: 'numeric',
                 minute: '2-digit',
@@ -655,79 +629,6 @@ export default function CalendarPage() {
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white"
             >
               {selectedEvent ? "Update" : "Create"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Multiple Events Popover */}
-      <Dialog open={showEventsPopover} onOpenChange={setShowEventsPopover}>
-        <DialogContent className="sm:max-w-[500px] bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 rounded-3xl text-[#28282B] dark:text-[#E5E4E2]">
-          <DialogHeader>
-            {selectedDateInfo && (
-              <div className="text-center space-y-1 pb-4 border-b border-gray-200 dark:border-white/10">
-                <DialogTitle className="text-2xl font-bold text-[#28282B] dark:text-[#E5E4E2]">
-                  {selectedDateInfo.day}
-                </DialogTitle>
-                <p className="text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70">
-                  {selectedDateInfo.date}
-                </p>
-              </div>
-            )}
-          </DialogHeader>
-
-          <div className="space-y-3 py-4 max-h-[400px] overflow-y-auto">
-            {selectedDateEvents.length === 0 ? (
-              <p className="text-center text-[#28282B]/50 dark:text-[#E5E4E2]/50 py-8">
-                No events on this day
-              </p>
-            ) : (
-              selectedDateEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 hover:bg-white/70 dark:hover:bg-black/70 transition-all"
-                >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex-shrink-0">
-                    <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-[#28282B] dark:text-[#E5E4E2] truncate text-sm">
-                      {event.title}
-                    </h4>
-                    <div className="flex items-center gap-1 text-xs text-[#28282B]/70 dark:text-[#E5E4E2]/70 mt-0.5">
-                      <span className="font-medium">
-                        {new Date(event.start).toLocaleTimeString('en-US', { 
-                          hour: '2-digit', 
-                          minute: '2-digit',
-                          hour12: true 
-                        })}
-                      </span>
-                      {event.end && (
-                        <>
-                          <span>-</span>
-                          <span className="font-medium">
-                            {new Date(event.end).toLocaleTimeString('en-US', { 
-                              hour: '2-digit', 
-                              minute: '2-digit',
-                              hour12: true 
-                            })}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowEventsPopover(false)}
-              className="w-full"
-            >
-              Close
             </Button>
           </DialogFooter>
         </DialogContent>
