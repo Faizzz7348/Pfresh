@@ -83,18 +83,6 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </div>
           </div>
 
-          {/* Day and Date Display */}
-          <div className="flex-1 flex justify-center">
-            <div className="text-center">
-              <div className="font-semibold text-slate-600 dark:text-slate-300" style={{ fontSize: '12px' }}>
-                {currentTime.toLocaleDateString('en-US', { weekday: 'long' })}
-              </div>
-              <div className="text-slate-500 dark:text-slate-400" style={{ fontSize: '10px' }}>
-                {currentTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              </div>
-            </div>
-          </div>
-
           {/* Navigation - Floating Dock Toggle + Theme Toggle + Menu Button */}
           <div className="flex items-center gap-2">
             {/* Floating Dock Toggle Button - Only in Edit Mode */}
@@ -149,6 +137,18 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               align="end" 
               className="w-56 bg-white/95 dark:bg-black/95 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200"
             >
+              {/* Day and Date Display - Carousel Style for Dark Mode */}
+              <div className="mx-1 my-2 mb-3 p-3 rounded-xl bg-gradient-to-r from-blue-50/80 to-white/80 dark:from-blue-950/40 dark:to-gray-900/40 border border-blue-200/50 dark:border-blue-500/20">
+                <div className="text-center">
+                  <div className="font-bold text-gray-500 dark:text-blue-300" style={{ fontSize: '12px' }}>
+                    {currentTime.toLocaleDateString('en-US', { weekday: 'long' })}
+                  </div>
+                  <div className="text-slate-500 dark:text-slate-400" style={{ fontSize: '10px', marginTop: '2px' }}>
+                    {currentTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </div>
+                </div>
+              </div>
+
               {/* Saved Links */}
               <DropdownMenuItem 
                 onClick={onSavedLinks}

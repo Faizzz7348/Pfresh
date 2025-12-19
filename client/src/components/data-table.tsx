@@ -774,7 +774,7 @@ export function DataTable({
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-6 py-3 border-b border-border/20 bg-white/70 dark:bg-black/70 backdrop-blur-2xl text-[10px] rounded-t-2xl" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+      <div className="px-6 py-3 border-b border-border/20 bg-white/70 dark:bg-gray-950/90 backdrop-blur-2xl text-[10px] rounded-t-2xl" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
         <div className="flex flex-row gap-3 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
@@ -789,7 +789,7 @@ export function DataTable({
               <SelectTrigger className="h-6 px-2 pagination-button text-xs font-semibold [&>svg]:hidden w-auto min-w-[3rem]">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
+              <SelectContent className="bg-white dark:bg-gray-950 border-gray-300 dark:border-gray-700">
                 <SelectItem value="16" className="font-semibold">16</SelectItem>
                 <SelectItem value="30" className="font-semibold">30</SelectItem>
                 <SelectItem value="50" className="font-semibold">50</SelectItem>
@@ -840,7 +840,7 @@ export function DataTable({
         
       </div>
       {/* Bottom Row: Sort/Filter/Clear (Left) and Search (Right) */}
-      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-white/70 dark:bg-black/70 backdrop-blur-2xl">
+      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-white/70 dark:bg-gray-950/90 backdrop-blur-2xl">
         <div className="flex items-center gap-2 flex-shrink-0">
           {/* Sort Popover */}
           <Popover>
@@ -859,7 +859,7 @@ export function DataTable({
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-52 p-0" align="start">
-              <div className="p-3 bg-slate-100 dark:bg-black/95 rounded-lg border border-slate-200 dark:border-blue-500/20">
+              <div className="p-3 bg-slate-100 dark:bg-gray-950/95 rounded-lg border border-slate-200 dark:border-blue-500/20">
                 <h4 className="font-medium text-sm mb-3 pb-2 border-b border-slate-300 dark:border-border/20 flex items-center gap-2">
                   <ArrowUpDown className="w-3.5 h-3.5 text-gray-400 dark:text-blue-400" />
                   Sort By
@@ -966,7 +966,7 @@ export function DataTable({
                 </span>
               )}
               <PopoverContent className="w-64 p-0" align="start">
-              <div className="p-3 bg-slate-100 dark:bg-black/95 rounded-lg border border-slate-200 dark:border-blue-500/20">
+              <div className="p-3 bg-slate-100 dark:bg-gray-950/95 rounded-lg border border-slate-200 dark:border-blue-500/20">
                 {/* Routes Section - Hidden in shared view */}
                 {!isSharedView && (
                   <>
@@ -1079,7 +1079,7 @@ export function DataTable({
       </div>
       {/* Active Filters Display */}
       {(searchTerm || filterValue.length > 0 || deliveryFilterValue.length > 0) && (
-        <div className="px-6 py-2 border-b border-border/20 bg-white/70 dark:bg-black/70 backdrop-blur-2xl">
+        <div className="px-6 py-2 border-b border-border/20 bg-white/70 dark:bg-gray-950/90 backdrop-blur-2xl">
           <div className="flex flex-wrap items-center gap-1">
             <span className="text-muted-foreground font-medium text-xs">Active:</span>
             {searchTerm && (
@@ -1118,7 +1118,7 @@ export function DataTable({
       <div className="relative w-full overflow-auto max-h-[calc(100vh-320px)] border rounded-2xl">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full relative">
-            <TableHeader className="table-header-glass sticky top-0 z-20 bg-white dark:bg-slate-900 border-b-2 border-yellow-400/30">
+            <TableHeader className="table-header-glass sticky top-0 z-20 bg-white dark:bg-gray-950 border-b-2 border-yellow-400/30">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
