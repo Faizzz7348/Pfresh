@@ -1302,18 +1302,18 @@ export function DataTable({
                                   if (isSharedView || editMode) {
                                     const status = getScheduleStatus(row);
                                     if (status === 'inactive') {
-                                      return "bg-gray-100/60 dark:bg-gray-950 opacity-50";
+                                      return "bg-gray-100/60 dark:bg-gray-950/90 opacity-50";
                                     } else if (status === 'off-schedule') {
-                                      return "odd:bg-white dark:odd:bg-gray-950 even:bg-blue-50/50 dark:even:bg-gray-900 opacity-60";
+                                      return "odd:bg-white dark:odd:bg-gray-900 even:bg-blue-50/50 dark:even:bg-gray-800 opacity-60";
                                     } else {
-                                      return "odd:bg-white dark:odd:bg-gray-950 even:bg-blue-50/50 dark:even:bg-gray-900";
+                                      return "odd:bg-white dark:odd:bg-gray-900 even:bg-blue-50/50 dark:even:bg-gray-800";
                                     }
                                   } else {
                                     // Regular view mode: standard styling
                                     if (row.active === false) {
-                                      return "bg-gray-100/60 dark:bg-gray-950 opacity-50";
+                                      return "bg-gray-100/60 dark:bg-gray-950/90 opacity-50";
                                     } else {
-                                      return "odd:bg-white dark:odd:bg-gray-950 even:bg-blue-50/50 dark:even:bg-gray-900";
+                                      return "odd:bg-white dark:odd:bg-gray-900 even:bg-blue-50/50 dark:even:bg-gray-800";
                                     }
                                   }
                                 })()
