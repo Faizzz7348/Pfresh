@@ -69,7 +69,7 @@ import {
 } from "./skeleton-loader";
 import { TableRow as TableRowType, TableColumn } from "@shared/schema";
 import { UseMutationResult } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -79,14 +79,8 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 
-// Simple mobile-friendly tooltip component
-interface MobileTooltipProps {
-  content: string;
-  children: React.ReactNode;
-  showBelow?: boolean;
-}
-
-function MobileTooltip({ content, children, showBelow = false }: MobileTooltipProps) {
+// Simple mobile-friendly tooltip component - memoized
+const MobileTooltip = memo(function MobileTooltip({ content, children, showBelow = false }: MobileTooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -143,6 +137,13 @@ function MobileTooltip({ content, children, showBelow = false }: MobileTooltipPr
       )}
     </div>
   );
+});
+
+// Interface definition for MobileTooltip props
+interface MobileTooltipProps {
+  content: string;
+  children: React.ReactNode;
+  showBelow?: boolean;
 }
 
 interface DataTableProps {
@@ -225,7 +226,10 @@ export function DataTable({
   const { toast } = useToast();
 
   // Filter columns to hide "info" column when not in edit mode
-  const visibleColumns = editMode ? columns : columns.filter(col => col.dataKey !== 'info');
+  const visibleColumns = useMemo(() => 
+    editMode ? columns : columns.filter(col => col.dataKey !== 'info'),
+    [editMode, columns]
+  );
 
   // Reset to page 1 when rows change (due to filtering)
   useEffect(() => {
@@ -260,96 +264,106 @@ export function DataTable({
     }
   };
 
-  // Apply sorting based on sortState
-  const sortedRows = sortState ? (() => {
-    const sorted = [...rows].sort((a, b) => {
-      // Multi-tier sorting ONLY for shared view or edit mode: on-schedule > off-schedule > inactive
-      if (isSharedView || editMode) {
-        const statusA = getScheduleStatus(a);
-        const statusB = getScheduleStatus(b);
-        
-        const statusOrder = { 'on-schedule': 0, 'off-schedule': 1, 'inactive': 2 };
-        if (statusOrder[statusA] !== statusOrder[statusB]) {
-          return statusOrder[statusA] - statusOrder[statusB];
+  // Apply sorting based on sortState - memoized for performance
+  const sortedRows = useMemo(() => {
+    if (sortState) {
+      const sorted = [...rows].sort((a, b) => {
+        // Multi-tier sorting ONLY for shared view or edit mode: on-schedule > off-schedule > inactive
+        if (isSharedView || editMode) {
+          const statusA = getScheduleStatus(a);
+          const statusB = getScheduleStatus(b);
+          
+          const statusOrder = { 'on-schedule': 0, 'off-schedule': 1, 'inactive': 2 };
+          if (statusOrder[statusA] !== statusOrder[statusB]) {
+            return statusOrder[statusA] - statusOrder[statusB];
+          }
+        } else {
+          // Regular view mode: only put inactive rows at bottom
+          const activeA = a.active !== false;
+          const activeB = b.active !== false;
+          if (activeA !== activeB) {
+            return activeA ? -1 : 1;
+          }
         }
+        
+        const direction = sortState.direction === 'asc' ? 1 : -1;
+        
+        switch (sortState.column) {
+          case 'code': {
+            const codeA = a.code || "";
+            const codeB = b.code || "";
+            const numA = parseInt(codeA) || 0;
+            const numB = parseInt(codeB) || 0;
+            return (numA - numB) * direction;
+          }
+          case 'route': {
+            const routeA = a.route || "";
+            const routeB = b.route || "";
+            return routeA.localeCompare(routeB) * direction;
+          }
+          case 'location': {
+            const locationA = a.location || "";
+            const locationB = b.location || "";
+            return locationA.localeCompare(locationB) * direction;
+          }
+          case 'delivery': {
+            const deliveryA = a.delivery || "";
+            const deliveryB = b.delivery || "";
+            return deliveryA.localeCompare(deliveryB) * direction;
+          }
+          case 'kilometer': {
+            const kmA = parseFloat((a as any).kilometer) || 0;
+            const kmB = parseFloat((b as any).kilometer) || 0;
+            return (kmA - kmB) * direction;
+          }
+          case 'order': {
+            const noA = a.no || 0;
+            const noB = b.no || 0;
+            return (noA - noB) * direction;
+          }
+          default:
+            return 0;
+        }
+      });
+      
+      // Keep QL Kitchen at top if it exists and is active
+      const qlKitchenIndex = sorted.findIndex(row => row.location === "QL Kitchen" && row.active !== false);
+      if (qlKitchenIndex > 0) {
+        const qlKitchenRow = sorted.splice(qlKitchenIndex, 1)[0];
+        sorted.unshift(qlKitchenRow);
+      }
+      
+      return sorted;
+    } else {
+      // Without sorting: use tier-based sorting ONLY for shared view or edit mode
+      if (isSharedView || editMode) {
+        const onScheduleRows = rows.filter(row => getScheduleStatus(row) === 'on-schedule');
+        const offScheduleRows = rows.filter(row => getScheduleStatus(row) === 'off-schedule');
+        const inactiveRows = rows.filter(row => getScheduleStatus(row) === 'inactive');
+        return [...onScheduleRows, ...offScheduleRows, ...inactiveRows];
       } else {
         // Regular view mode: only put inactive rows at bottom
-        const activeA = a.active !== false;
-        const activeB = b.active !== false;
-        if (activeA !== activeB) {
-          return activeA ? -1 : 1;
-        }
+        const activeRows = rows.filter(row => row.active !== false);
+        const inactiveRows = rows.filter(row => row.active === false);
+        return [...activeRows, ...inactiveRows];
       }
-      
-      const direction = sortState.direction === 'asc' ? 1 : -1;
-      
-      switch (sortState.column) {
-        case 'code': {
-          const codeA = a.code || "";
-          const codeB = b.code || "";
-          const numA = parseInt(codeA) || 0;
-          const numB = parseInt(codeB) || 0;
-          return (numA - numB) * direction;
-        }
-        case 'route': {
-          const routeA = a.route || "";
-          const routeB = b.route || "";
-          return routeA.localeCompare(routeB) * direction;
-        }
-        case 'location': {
-          const locationA = a.location || "";
-          const locationB = b.location || "";
-          return locationA.localeCompare(locationB) * direction;
-        }
-        case 'delivery': {
-          const deliveryA = a.delivery || "";
-          const deliveryB = b.delivery || "";
-          return deliveryA.localeCompare(deliveryB) * direction;
-        }
-        case 'kilometer': {
-          const kmA = parseFloat((a as any).kilometer) || 0;
-          const kmB = parseFloat((b as any).kilometer) || 0;
-          return (kmA - kmB) * direction;
-        }
-        case 'order': {
-          const noA = a.no || 0;
-          const noB = b.no || 0;
-          return (noA - noB) * direction;
-        }
-        default:
-          return 0;
-      }
-    });
-    
-    // Keep QL Kitchen at top if it exists and is active
-    const qlKitchenIndex = sorted.findIndex(row => row.location === "QL Kitchen" && row.active !== false);
-    if (qlKitchenIndex > 0) {
-      const qlKitchenRow = sorted.splice(qlKitchenIndex, 1)[0];
-      sorted.unshift(qlKitchenRow);
     }
-    
-    return sorted;
-  })() : (() => {
-    // Without sorting: use tier-based sorting ONLY for shared view or edit mode
-    if (isSharedView || editMode) {
-      const onScheduleRows = rows.filter(row => getScheduleStatus(row) === 'on-schedule');
-      const offScheduleRows = rows.filter(row => getScheduleStatus(row) === 'off-schedule');
-      const inactiveRows = rows.filter(row => getScheduleStatus(row) === 'inactive');
-      return [...onScheduleRows, ...offScheduleRows, ...inactiveRows];
-    } else {
-      // Regular view mode: only put inactive rows at bottom
-      const activeRows = rows.filter(row => row.active !== false);
-      const inactiveRows = rows.filter(row => row.active === false);
-      return [...activeRows, ...inactiveRows];
-    }
-  })();
+  }, [rows, sortState, isSharedView, editMode]);
 
-  // Calculate pagination
-  const totalRows = sortedRows.length;
-  const totalPages = Math.ceil(totalRows / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedRows = sortedRows.slice(startIndex, endIndex);
+  // Calculate pagination - memoized
+  const { totalRows, totalPages, paginatedRows } = useMemo(() => {
+    const total = sortedRows.length;
+    const pages = Math.ceil(total / pageSize);
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const paginated = sortedRows.slice(start, end);
+    
+    return {
+      totalRows: total,
+      totalPages: pages,
+      paginatedRows: paginated
+    };
+  }, [sortedRows, currentPage, pageSize]);
 
   // Reset to first page when page size changes
   const handlePageSizeChange = (newPageSize: string) => {
@@ -367,9 +381,6 @@ export function DataTable({
     if (!result.destination) return;
     if (result.destination.index === result.source.index) return;
 
-    // Only allow drag in edit mode
-    if (!editMode) return;
-
     const { source, destination, type } = result;
 
     try {
@@ -380,8 +391,8 @@ export function DataTable({
 
         const columnIds = newColumnOrder.map((col) => col.id);
         
-        // Wait for mutation to complete before UI update
-        await onReorderColumns.mutateAsync(columnIds);
+        // Fire and forget for better performance - don't wait
+        onReorderColumns.mutate(columnIds);
       } else if (type === "row") {
         // IMPORTANT: Use the ACTUAL visible rows (paginatedRows) for drag & drop
         // This ensures we're reordering based on what user sees, not the full dataset
@@ -402,8 +413,8 @@ export function DataTable({
           newFullOrder[pageStartIndex + idx] = id;
         });
 
-        // Wait for mutation to complete before UI update
-        await onReorderRows.mutateAsync(newFullOrder);
+        // Fire and forget for better performance - don't wait
+        onReorderRows.mutate(newFullOrder);
       }
     } catch (error) {
       console.error('Drag and drop error:', error);
@@ -750,9 +761,21 @@ export function DataTable({
 
   const handleDeleteConfirm = () => {
     if (selectedRowForDelete) {
-      onDeleteRow.mutate(selectedRowForDelete);
+      // Optimistic update - close dialog immediately
       setDeleteConfirmOpen(false);
+      const deletedId = selectedRowForDelete;
       setSelectedRowForDelete(null);
+      
+      // Fire delete mutation (optimistic)
+      onDeleteRow.mutate(deletedId, {
+        onError: () => {
+          toast({
+            title: "Error",
+            description: "Failed to delete row. Please try again.",
+            variant: "destructive",
+          });
+        }
+      });
     }
   };
 
@@ -1146,7 +1169,6 @@ export function DataTable({
                         key={column.id}
                         draggableId={column.id}
                         index={index}
-                        isDragDisabled={!editMode}
                       >
                         {(provided) => (
                           <TableHead
@@ -1269,7 +1291,6 @@ export function DataTable({
                           key={row.id}
                           draggableId={row.id}
                           index={index}
-                          isDragDisabled={!editMode}
                         >
                           {(provided, snapshot) => (
                             <TableRow

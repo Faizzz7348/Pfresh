@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,6 +18,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   const [isOpen, setIsOpen] = useState(false);
   const [editValue, setEditValue] = useState(value);
   const [isSaving, setIsSaving] = useState(false);
+  const saveTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     // Only update editValue when not currently saving
@@ -30,10 +31,24 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   useEffect(() => {
     if (!isOpen) {
       setIsSaving(false);
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
     }
   }, [isOpen]);
 
-  const handleSave = async () => {
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleSave = useCallback(async () => {
+    if (isSaving) return; // Prevent double saves
+    
     setIsSaving(true);
     let processedValue = editValue;
     
@@ -47,16 +62,21 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     try {
       await onSave(processedValue);
       setIsOpen(false);
+    } catch (error) {
+      console.error('Save error:', error);
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [editValue, type, onSave, isSaving]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setEditValue(value);
     setIsOpen(false);
     setIsSaving(false);
-  };
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+  }, [value]);
 
   const getPlaceholder = () => {
     if (dataKey === 'latitude') {
