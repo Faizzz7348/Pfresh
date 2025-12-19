@@ -1302,13 +1302,6 @@ export default function TablePage() {
                                 );
                               })}
                             </dl>
-                            
-                            {/* Date and Time Display - Below Content */}
-                            <div className="mt-3 pt-2 border-t border-blue-200/30 dark:border-blue-500/10 flex justify-end">
-                              <div className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">
-                                {formatDateTime(currentTime)}
-                              </div>
-                            </div>
                         </div>
                       </div>
                     </CarouselItem>

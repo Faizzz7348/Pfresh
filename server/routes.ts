@@ -281,6 +281,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const newImage = {
         url: imageUrl,
         caption: caption && typeof caption === 'string' ? caption : "",
+        description: "",
         type: "image" as const,
       };
       const updatedImages = [...row.images, newImage];
@@ -329,6 +330,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       updatedImages[imageIndex] = {
         url: imageUrl !== undefined ? imageUrl : updatedImages[imageIndex].url,
         caption: caption !== undefined ? caption : updatedImages[imageIndex].caption,
+        description: updatedImages[imageIndex].description || "",
         type: updatedImages[imageIndex].type || "image",
         thumbnail: updatedImages[imageIndex].thumbnail
       };

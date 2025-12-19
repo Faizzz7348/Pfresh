@@ -83,6 +83,18 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </div>
           </div>
 
+          {/* Day and Date Display */}
+          <div className="flex-1 flex justify-center">
+            <div className="text-center">
+              <div className="font-semibold text-slate-600 dark:text-slate-300" style={{ fontSize: '12px' }}>
+                {currentTime.toLocaleDateString('en-US', { weekday: 'long' })}
+              </div>
+              <div className="text-slate-500 dark:text-slate-400" style={{ fontSize: '10px' }}>
+                {currentTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </div>
+            </div>
+          </div>
+
           {/* Navigation - Floating Dock Toggle + Theme Toggle + Menu Button */}
           <div className="flex items-center gap-2">
             {/* Floating Dock Toggle Button - Only in Edit Mode */}

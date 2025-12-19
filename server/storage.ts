@@ -301,11 +301,13 @@ export class MemStorage implements IStorage {
           {
             url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
             caption: "Modern city skyline",
+            description: "",
             type: "image",
           },
           {
             url: "https://images.unsplash.com/photo-1573167507387-4d8c0a67ceb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
             caption: "Urban landscape",
+            description: "",
             type: "image",
           },
         ],
@@ -333,6 +335,7 @@ export class MemStorage implements IStorage {
           {
             url: "https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
             caption: "Suburban area",
+            description: "",
             type: "image",
           },
         ],
@@ -381,6 +384,7 @@ export class MemStorage implements IStorage {
           {
             url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
             caption: "Georgetown bridge",
+            description: "",
             type: "image",
           },
         ],
@@ -1077,11 +1081,13 @@ export class DatabaseStorage implements IStorage {
               {
                 url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
                 caption: "KL city center",
+                description: "",
                 type: "image",
               },
               {
                 url: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
                 caption: "Petronas Towers",
+                description: "",
                 type: "image",
               },
             ],
@@ -1107,6 +1113,7 @@ export class DatabaseStorage implements IStorage {
               {
                 url: "https://images.unsplash.com/photo-1605649487212-183a9c785351?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
                 caption: "Selangor district",
+                description: "",
                 type: "image",
               },
             ],
@@ -1151,6 +1158,7 @@ export class DatabaseStorage implements IStorage {
               {
                 url: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
                 caption: "Penang heritage",
+                description: "",
                 type: "image",
               },
             ],
