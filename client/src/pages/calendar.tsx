@@ -9,11 +9,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar as CalendarIcon, Plus, Edit, Trash2, ArrowLeft, Sun, Moon } from "lucide-react";
+import { Calendar as CalendarIcon, Plus, Edit, Trash2, ArrowLeft, Sun, Moon, Clock } from "lucide-react";
 
 interface CalendarEvent {
   id: string;
@@ -348,32 +349,7 @@ export default function CalendarPage() {
 
       <main className="bg-white dark:bg-black animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150" style={{ paddingTop: 'calc(4rem + env(safe-area-inset-top) + 2rem)', paddingBottom: '2rem' }}>
         <div className="container mx-auto px-4 py-8 max-w-7xl">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-blue-500/10 dark:bg-blue-400/10 rounded-2xl">
-                  <CalendarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                </div>
-              </div>
-              <Button
-                onClick={() => {
-                  setSelectedEvent(null);
-                  setEventTitle("");
-                  setEventStart(new Date().toISOString().slice(0, 16));
-                  setEventEnd(new Date(Date.now() + 3600000).toISOString().slice(0, 16));
-                  setEventDescription("");
-                  setShowEventDialog(true);
-                }}
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Event
-              </Button>
-            </div>
-          </div>
+
 
           {/* Calendar */}
           <div>
@@ -393,6 +369,47 @@ export default function CalendarPage() {
               selectMirror={true}
               dayMaxEvents={true}
               height="auto"
+              eventContent={(eventInfo) => {
+                const event = events.find(e => e.id === eventInfo.event.id);
+                const startTime = new Date(eventInfo.event.start!).toLocaleTimeString('en-US', { 
+                  hour: '2-digit', 
+                  minute: '2-digit',
+                  hour12: true 
+                });
+                const endTime = eventInfo.event.end ? new Date(eventInfo.event.end).toLocaleTimeString('en-US', { 
+                  hour: '2-digit', 
+                  minute: '2-digit',
+                  hour12: true 
+                }) : '';
+                
+                return (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <div className="cursor-pointer p-1 overflow-hidden text-ellipsis whitespace-nowrap w-full">
+                        {eventInfo.event.title}
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-white/95 dark:bg-black/95 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 rounded-2xl p-4">
+                      <div className="space-y-3">
+                        <div>
+                          <h3 className="font-semibold text-lg text-[#28282B] dark:text-[#E5E4E2] mb-2">
+                            {eventInfo.event.title}
+                          </h3>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70">
+                          <Clock className="w-4 h-4" />
+                          <span>{startTime}{endTime ? ` - ${endTime}` : ''}</span>
+                        </div>
+                        {event?.description && (
+                          <div className="text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70 mt-2 pt-2 border-t border-gray-200 dark:border-white/10">
+                            {event.description}
+                          </div>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                );
+              }}
               eventDrop={(info) => {
                 const updatedEvent = events.find(e => e.id === info.event.id);
                 if (updatedEvent) {

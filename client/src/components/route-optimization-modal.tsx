@@ -177,7 +177,7 @@ export function RouteOptimizationModal({
               <div>
                 <Label className="text-base font-semibold mb-3 block">Choose Algorithm</Label>
                 <RadioGroup value={algorithm} onValueChange={(value: any) => setAlgorithm(value)} className="space-y-3">
-                  <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-nearest-neighbor">
+                  <div className="flex items-start space-x-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-blue-50/50 dark:hover:bg-blue-950/50 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-200 cursor-pointer" data-testid="radio-algorithm-nearest-neighbor">
                     <RadioGroupItem value="nearest_neighbor" id="nearest_neighbor" />
                     <div className="flex-1">
                       <Label htmlFor="nearest_neighbor" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
@@ -189,7 +189,7 @@ export function RouteOptimizationModal({
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-genetic">
+                  <div className="flex items-start space-x-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-purple-50/50 dark:hover:bg-purple-950/50 hover:border-purple-300 dark:hover:border-purple-700 transition-all duration-200 cursor-pointer" data-testid="radio-algorithm-genetic">
                     <RadioGroupItem value="genetic" id="genetic" />
                     <div className="flex-1">
                       <Label htmlFor="genetic" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
@@ -201,7 +201,7 @@ export function RouteOptimizationModal({
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-simulated-annealing">
+                  <div className="flex items-start space-x-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-orange-50/50 dark:hover:bg-orange-950/50 hover:border-orange-300 dark:hover:border-orange-700 transition-all duration-200 cursor-pointer" data-testid="radio-algorithm-simulated-annealing">
                     <RadioGroupItem value="simulated_annealing" id="simulated_annealing" />
                     <div className="flex-1">
                       <Label htmlFor="simulated_annealing" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
@@ -215,7 +215,7 @@ export function RouteOptimizationModal({
                 </RadioGroup>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
+              <div className="flex items-center justify-between p-4 bg-muted/50 dark:bg-muted/30 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-green-50/50 dark:hover:bg-green-950/30 hover:border-green-300 dark:hover:border-green-700 transition-all duration-200">
                 <div className="flex-1">
                   <Label htmlFor="prioritize-delivery" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
                     Prioritize Delivery Grouping
@@ -275,7 +275,7 @@ export function RouteOptimizationModal({
                 </h3>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg" data-testid="stat-distance-saved">
+                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-blue-50/70 dark:hover:bg-blue-950/40 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 hover:shadow-lg hover:scale-105" data-testid="stat-distance-saved">
                   <div className="flex items-center gap-2 mb-2">
                     <TrendingDown className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     <span className="text-sm font-medium text-muted-foreground">Distance</span>
@@ -288,7 +288,7 @@ export function RouteOptimizationModal({
                   </p>
                 </div>
 
-                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg" data-testid="stat-time-saved">
+                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-purple-50/70 dark:hover:bg-purple-950/40 hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-200 hover:shadow-lg hover:scale-105" data-testid="stat-time-saved">
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     <span className="text-sm font-medium text-muted-foreground">Time</span>
@@ -299,7 +299,7 @@ export function RouteOptimizationModal({
                   <p className="text-xs text-muted-foreground mt-1">saved per trip</p>
                 </div>
 
-                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg" data-testid="stat-fuel-saved">
+                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-green-50/70 dark:hover:bg-green-950/40 hover:border-green-300 dark:hover:border-green-600 transition-all duration-200 hover:shadow-lg hover:scale-105" data-testid="stat-fuel-saved">
                   <div className="flex items-center gap-2 mb-2">
                     <Droplets className="w-5 h-5 text-green-600 dark:text-green-400" />
                     <span className="text-sm font-medium text-muted-foreground">Fuel</span>
@@ -310,7 +310,7 @@ export function RouteOptimizationModal({
                   <p className="text-xs text-muted-foreground mt-1">less consumption</p>
                 </div>
 
-                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg" data-testid="stat-optimized-distance">
+                <div className="bg-white/60 dark:bg-black/40 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-orange-50/70 dark:hover:bg-orange-950/40 hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-200 hover:shadow-lg hover:scale-105" data-testid="stat-optimized-distance">
                   <div className="flex items-center gap-2 mb-2">
                     <Route className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                     <span className="text-sm font-medium text-muted-foreground">New Total</span>
@@ -325,7 +325,7 @@ export function RouteOptimizationModal({
               </div>
             </div>
 
-            <div className="bg-muted/30 p-4 rounded-lg border">
+            <div className="bg-muted/30 dark:bg-muted/20 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200">
               <h4 className="font-semibold mb-2 flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 <Zap className="w-4 h-4" />
                 Algorithm Used
