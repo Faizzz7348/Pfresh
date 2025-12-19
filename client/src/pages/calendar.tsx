@@ -259,7 +259,7 @@ export default function CalendarPage() {
         }
         
         .fc-toolbar-title {
-          font-size: 1.5rem;
+          font-size: 12px;
           font-weight: 700;
           color: #28282B;
         }
