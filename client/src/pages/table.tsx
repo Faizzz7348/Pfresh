@@ -3,6 +3,7 @@ import { useTableData } from "@/hooks/use-table-data";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Button as PrimeButton } from 'primereact/button';
 import { AddImageSection } from "@/components/add-image-section";
 import { ImageEditSection } from "@/components/image-edit-section";
 import { ColumnCustomizationModal } from "@/components/column-customization-modal";
@@ -84,6 +85,8 @@ export default function TablePage() {
     const saved = localStorage.getItem('showFloatingDock');
     return saved !== null ? JSON.parse(saved) : true;
   });
+  const [expandedRows, setExpandedRows] = useState<any>(null);
+  const [tableSize, setTableSize] = useState<'small' | 'normal' | 'large'>('normal');
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
@@ -1528,6 +1531,36 @@ export default function TablePage() {
       {/* Main Table */}
       <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-500">
         <div className="card p-4">
+          {/* Table Toolbar */}
+          <div className="flex justify-between items-center mb-3 gap-2">
+            <div className="flex gap-2">
+              <Button
+                variant={tableSize === 'small' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTableSize('small')}
+              >
+                Small
+              </Button>
+              <Button
+                variant={tableSize === 'normal' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTableSize('normal')}
+              >
+                Normal
+              </Button>
+              <Button
+                variant={tableSize === 'large' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTableSize('large')}
+              >
+                Large
+              </Button>
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {rowsWithDistances.length} rows • {expandedRows ? Object.keys(expandedRows).length : 0} expanded
+            </div>
+          </div>
+
           <DataTable 
             value={rowsWithDistances} 
             scrollable 
@@ -1535,13 +1568,136 @@ export default function TablePage() {
             virtualScrollerOptions={{ itemSize: 46 }} 
             tableStyle={{ minWidth: '50rem' }}
             loading={exitingEditMode}
+            reorderableColumns={editMode}
+            resizableColumns
+            columnResizeMode="expand"
+            showGridlines
+            size={tableSize}
+            expandedRows={expandedRows}
+            onRowToggle={(e) => setExpandedRows(e.data)}
+            rowExpansionTemplate={(data) => {
+              return (
+                <div className="p-3">
+                  <h5 className="font-semibold mb-2">Details for {data.location}</h5>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm"><strong>Code:</strong> {data.code}</p>
+                      <p className="text-sm"><strong>Route:</strong> {data.route}</p>
+                      <p className="text-sm"><strong>Delivery:</strong> {data.delivery}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm"><strong>Info:</strong> {data.info}</p>
+                      <p className="text-sm"><strong>Coordinates:</strong> {data.latitude}, {data.longitude}</p>
+                    </div>
+                  </div>
+                  {data.images && data.images.length > 0 && (
+                    <div className="mt-3">
+                      <h6 className="font-semibold mb-2">Images ({data.images.length})</h6>
+                      <div className="flex gap-2 flex-wrap">
+                        {data.images.map((img: any, idx: number) => (
+                          <img 
+                            key={idx} 
+                            src={img.url} 
+                            alt={img.caption || `Image ${idx + 1}`}
+                            className="w-20 h-20 object-cover rounded border"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }}
+            frozenValue={rowsWithDistances.filter(row => row.location === "QL Kitchen")}
           >
+            <Column expander style={{ width: '3rem' }} frozen />
+            <Column 
+              body={(rowData) => (
+                <div className="flex gap-1">
+                  {editMode && (
+                    <>
+                      <PrimeButton 
+                        icon="pi pi-pencil" 
+                        rounded 
+                        text 
+                        severity="info"
+                        size="small"
+                        onClick={() => setSelectedRowForImage(rowData.id)}
+                        tooltip="Edit"
+                      />
+                      <PrimeButton 
+                        icon="pi pi-trash" 
+                        rounded 
+                        text 
+                        severity="danger"
+                        size="small"
+                        onClick={() => deleteRow.mutate(rowData.id)}
+                        tooltip="Delete"
+                      />
+                    </>
+                  )}
+                  <PrimeButton 
+                    icon="pi pi-images" 
+                    rounded 
+                    text 
+                    severity="secondary"
+                    size="small"
+                    onClick={() => setSelectedRowForImage(rowData.id)}
+                    badge={rowData.images?.length > 0 ? String(rowData.images.length) : undefined}
+                    tooltip="View Images"
+                  />
+                </div>
+              )}
+              header="Actions"
+              frozen
+              alignFrozen="right"
+              style={{ width: '140px' }}
+            />
             {displayColumns.map((column) => (
               <Column 
                 key={column.id}
                 field={column.dataKey}
                 header={column.name}
-                style={{ width: `${100 / displayColumns.length}%` }}
+                style={{ minWidth: '150px' }}
+                sortable
+                filter={editMode}
+                body={(rowData) => {
+                  // Special template for images column
+                  if (column.dataKey === 'images' && rowData.images && rowData.images.length > 0) {
+                    return (
+                      <div className="flex gap-1">
+                        {rowData.images.slice(0, 3).map((img: any, idx: number) => (
+                          <img 
+                            key={idx}
+                            src={img.url}
+                            alt={img.caption || ''}
+                            className="w-8 h-8 object-cover rounded border cursor-pointer hover:scale-110 transition-transform"
+                            onClick={() => setSelectedRowForImage(rowData.id)}
+                          />
+                        ))}
+                        {rowData.images.length > 3 && (
+                          <span className="text-xs text-gray-500 self-center">+{rowData.images.length - 3}</span>
+                        )}
+                      </div>
+                    );
+                  }
+                  
+                  // Special template for marker color
+                  if (column.dataKey === 'markerColor') {
+                    return (
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-6 h-6 rounded border border-gray-300"
+                          style={{ backgroundColor: rowData.markerColor }}
+                        />
+                        <span className="text-xs">{rowData.markerColor}</span>
+                      </div>
+                    );
+                  }
+                  
+                  // Default display
+                  return rowData[column.dataKey];
+                }}
               />
             ))}
           </DataTable>
